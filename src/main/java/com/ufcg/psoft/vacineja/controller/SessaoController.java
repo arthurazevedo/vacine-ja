@@ -13,17 +13,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
-public class SessionController {
+public class SessaoController {
     @Autowired
     private AuthenticationManager authManager;
 
@@ -36,8 +35,8 @@ public class SessionController {
     @Value("${hash.forca}")
     private int forcaHash;
 
-    @PostMapping
-    public ResponseEntity<TokenDTO> autenticar(@RequestBody LoginDTO loginDTO) {
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(forcaHash);
 
         UsernamePasswordAuthenticationToken dadosLogin = new UsernamePasswordAuthenticationToken(
@@ -57,14 +56,9 @@ public class SessionController {
                     return ResponseEntity.ok().body(new TokenDTO(token, "Bearer"));
                 }
             }
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body("Informações de login inválidas.");
         }catch(AuthenticationException ex) {
             return ResponseEntity.badRequest().build();
         }
-    }
-
-    @GetMapping()
-    public Usuario teste() {
-        return usuarioServices.findAll().get(0);
     }
 }
