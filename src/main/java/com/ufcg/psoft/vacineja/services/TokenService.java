@@ -21,7 +21,7 @@ public class TokenService {
         Date dataExpiracao = new Date(dataCriacao.getTime() + Long.parseLong(expiraton));
 
         return Jwts.builder()
-                .setIssuer("Api Financeiro")
+                .setIssuer("Api Vacina")
                 .setSubject(authentication.getPrincipal().toString())
                 .setIssuedAt(dataCriacao)
                 .setExpiration(dataExpiracao)
@@ -38,7 +38,7 @@ public class TokenService {
         }
     }
 
-    public String getLogin(String token) {
+    public String getEmail(String token) {
         Claims body = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
         return body.getSubject();
     }

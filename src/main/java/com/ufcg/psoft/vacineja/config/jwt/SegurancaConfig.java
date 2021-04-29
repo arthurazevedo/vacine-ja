@@ -1,5 +1,8 @@
 package com.ufcg.psoft.vacineja.config.jwt;
 
+import com.ufcg.psoft.vacineja.repository.UsuarioRepository;
+import com.ufcg.psoft.vacineja.services.AutenticacaoService;
+import com.ufcg.psoft.vacineja.services.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +28,7 @@ public class SegurancaConfig extends WebSecurityConfigurerAdapter {
     private TokenService tokenService;
 
     @Autowired
-    private UsuarioServices usuarioServices;
+    private UsuarioRepository usuarioServices;
 
     @Override
     @Bean
@@ -33,22 +36,27 @@ public class SegurancaConfig extends WebSecurityConfigurerAdapter {
         return new AutenticacaoManager();
     }
 
+    //Configuracao de autenticacao
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(autenticacaoService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
+    //Configuracao de autorizacao as rotas
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
                 //Lembrar de liberar as portas aqui
-                .antMatchers("/auth").permitAll()
+                .antMatchers(HttpMethod.POST, "/auth").permitAll()
                 .antMatchers(HttpMethod.POST, "/usuarios").permitAll()
                 .anyRequest().authenticated()
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                //possibilidade de apagar o proximo and
+                .and().csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilterBefore(new AutenticacaoViaTokenFilter(tokenService, usuarioServices), UsernamePasswordAuthenticationFilter.class);
     }
 
+    //Configuracao recursos estaticos
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/**.html", "/v2/api-docs",

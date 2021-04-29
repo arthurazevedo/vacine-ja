@@ -1,0 +1,1 @@
+INSERT INTO USUARIO (id, email, senha, perfil) VALUES (1, 'arthur@mail.com', '1234', 'C');

@@ -1,5 +1,8 @@
 package com.ufcg.psoft.vacineja.config.jwt;
 
+import com.ufcg.psoft.vacineja.models.Usuario;
+import com.ufcg.psoft.vacineja.repository.UsuarioRepository;
+import com.ufcg.psoft.vacineja.services.TokenService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -9,15 +12,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
 
     private TokenService tokenService;
-    private UsuarioServices usuarioServices;
+    private UsuarioRepository usuarioRepository;
 
-    public AutenticacaoViaTokenFilter(TokenService tokenService, UsuarioServices usuarioServices) {
+    public AutenticacaoViaTokenFilter(TokenService tokenService, UsuarioRepository usuarioRepository) {
         this.tokenService = tokenService;
-        this.usuarioServices = usuarioServices;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @Override
@@ -32,8 +36,9 @@ public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
     }
 
     private void autenticarUsuario(String token) {
-        String loginUser = tokenService.getLogin(token);
-        Optional<Usuario> usuarioOptional = usuarioServices.findByLogin(loginUser);
+        String emailUser = tokenService.getEmail(token);
+        Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(emailUser);
+
         Usuario usuario = usuarioOptional.get();
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken
