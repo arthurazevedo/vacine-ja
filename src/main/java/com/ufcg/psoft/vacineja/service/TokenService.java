@@ -1,4 +1,4 @@
-package com.ufcg.psoft.vacineja.services;
+package com.ufcg.psoft.vacineja.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -13,6 +13,7 @@ import java.util.Date;
 public class TokenService {
     @Value("${jwt.expiration}")
     private String expiraton;
+
     @Value("${jwt.secret}")
     private String secret;
 

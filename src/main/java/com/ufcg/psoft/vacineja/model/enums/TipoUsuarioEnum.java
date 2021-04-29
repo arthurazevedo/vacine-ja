@@ -1,4 +1,4 @@
-package com.ufcg.psoft.vacineja.models.enums;
+package com.ufcg.psoft.vacineja.model.enums;
 
 public enum TipoUsuarioEnum {
     FUNCIONARIO("F"),

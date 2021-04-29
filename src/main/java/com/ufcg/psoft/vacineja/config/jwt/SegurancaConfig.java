@@ -1,8 +1,8 @@
 package com.ufcg.psoft.vacineja.config.jwt;
 
 import com.ufcg.psoft.vacineja.repository.UsuarioRepository;
-import com.ufcg.psoft.vacineja.services.AutenticacaoService;
-import com.ufcg.psoft.vacineja.services.TokenService;
+import com.ufcg.psoft.vacineja.service.AutenticacaoService;
+import com.ufcg.psoft.vacineja.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,9 +48,7 @@ public class SegurancaConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().authorizeRequests()
                 //Lembrar de liberar as portas aqui
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
-                .antMatchers(HttpMethod.POST, "/usuarios").permitAll()
                 .anyRequest().authenticated()
-                //possibilidade de apagar o proximo and
                 .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilterBefore(new AutenticacaoViaTokenFilter(tokenService, usuarioServices), UsernamePasswordAuthenticationFilter.class);

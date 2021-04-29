@@ -1,6 +1,6 @@
-package com.ufcg.psoft.vacineja.models;
+package com.ufcg.psoft.vacineja.model;
 
-import com.ufcg.psoft.vacineja.models.enums.TipoUsuarioEnum;
+import com.ufcg.psoft.vacineja.model.enums.TipoUsuarioEnum;
 import org.springframework.security.core.GrantedAuthority;
 
 public class PerfilUsuario implements GrantedAuthority {

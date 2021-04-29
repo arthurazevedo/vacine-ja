@@ -1,6 +1,6 @@
 package com.ufcg.psoft.vacineja.repository;
 
-import com.ufcg.psoft.vacineja.models.Usuario;
+import com.ufcg.psoft.vacineja.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

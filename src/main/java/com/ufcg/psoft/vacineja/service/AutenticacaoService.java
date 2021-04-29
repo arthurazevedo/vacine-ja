@@ -1,6 +1,6 @@
-package com.ufcg.psoft.vacineja.services;
+package com.ufcg.psoft.vacineja.service;
 
-import com.ufcg.psoft.vacineja.models.Usuario;
+import com.ufcg.psoft.vacineja.model.Usuario;
 import com.ufcg.psoft.vacineja.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

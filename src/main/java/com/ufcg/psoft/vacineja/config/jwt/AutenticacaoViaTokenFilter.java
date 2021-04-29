@@ -1,8 +1,8 @@
 package com.ufcg.psoft.vacineja.config.jwt;
 
-import com.ufcg.psoft.vacineja.models.Usuario;
+import com.ufcg.psoft.vacineja.model.Usuario;
 import com.ufcg.psoft.vacineja.repository.UsuarioRepository;
-import com.ufcg.psoft.vacineja.services.TokenService;
+import com.ufcg.psoft.vacineja.service.TokenService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;

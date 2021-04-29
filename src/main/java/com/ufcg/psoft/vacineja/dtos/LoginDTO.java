@@ -1,4 +1,4 @@
-package com.ufcg.psoft.vacineja.forms;
+package com.ufcg.psoft.vacineja.dtos;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,7 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 
 @Getter
 @Setter
-public class LoginForm {
+public class LoginDTO {
     private String email;
     private String senha;
 
