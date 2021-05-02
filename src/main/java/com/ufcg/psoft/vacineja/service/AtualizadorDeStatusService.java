@@ -14,7 +14,7 @@ public class AtualizadorDeStatusService {
      */
     @Scheduled(cron = "0 0 0 * * *", zone = TIME_ZONE)
     public void atualizaStatus() {
-        //Pegar todos os cidadaos e chamar o método que atualiza o status dele
+        //TODO: Pegar todos os cidadaos e chamar o método que atualiza o status dele
         System.out.println("O status dos cidadãos que podem ser vacinados foram atualizados!");
     }
 }
