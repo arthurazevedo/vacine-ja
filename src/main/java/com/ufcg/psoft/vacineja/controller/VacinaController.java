@@ -2,11 +2,7 @@ package com.ufcg.psoft.vacineja.controller;
 
 import com.ufcg.psoft.vacineja.dtos.vacina.VacinaDTO;
 import com.ufcg.psoft.vacineja.model.Vacina;
-import com.ufcg.psoft.vacineja.service.vacina.BuscarVacinaPorId;
-import com.ufcg.psoft.vacineja.service.vacina.CadastrarVacina;
-import com.ufcg.psoft.vacineja.service.vacina.EditarVacina;
-import com.ufcg.psoft.vacineja.service.vacina.ListarVacinas;
-import com.ufcg.psoft.vacineja.service.vacina.RemoverVacina;
+import com.ufcg.psoft.vacineja.service.VacinaService;
 import com.ufcg.psoft.vacineja.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,42 +27,34 @@ import java.util.List;
 public class VacinaController {
 
     @Autowired
-    private CadastrarVacina cadastrarVacina;
-    @Autowired
-    private BuscarVacinaPorId buscarVacinaPorId;
-    @Autowired
-    private ListarVacinas listarVacinas;
-    @Autowired
-    private EditarVacina editarVacina;
-    @Autowired
-    private RemoverVacina removerVacina;
+    private VacinaService vacinaService;
     @Autowired
     private MapperUtil mapper;
 
     @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> cadastrarVacina(@RequestBody VacinaDTO vacinaDTO) {
-        return cadastrarVacina.executar(vacinaDTO, mapper);
+        return vacinaService.cadastrarVacina(vacinaDTO, mapper);
     }
 
     @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
     public List<Vacina> listarVacinas() {
-        return listarVacinas.executar();
+        return vacinaService.listarVacinas();
     }
 
     @GetMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<?> listarVacinas(@PathVariable Long id) {
-        return buscarVacinaPorId.executar(id);
+    public ResponseEntity<?> buscarVacinaPorId(@PathVariable Long id) {
+        return vacinaService.buscarPorId(id);
     }
 
     @PutMapping(value = "/{id}", consumes = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<?> editarVacina(@PathVariable Long id, @RequestBody VacinaDTO vacinaDTO) {
-        return editarVacina.executar(id, vacinaDTO);
+        return vacinaService.editarVacina(id, vacinaDTO);
     }
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> deletarVacina(@PathVariable Long id) {
-        return removerVacina.executar(id);
+        return vacinaService.removerVacinaPorId(id);
     }
 }
