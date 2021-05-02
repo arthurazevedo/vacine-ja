@@ -3,51 +3,52 @@ package com.ufcg.psoft.vacineja.service;
 import com.ufcg.psoft.vacineja.dtos.vacina.VacinaDTO;
 import com.ufcg.psoft.vacineja.model.Vacina;
 import com.ufcg.psoft.vacineja.repository.VacinaRepository;
-import com.ufcg.psoft.vacineja.utils.CustomError;
 import com.ufcg.psoft.vacineja.utils.ErroVacina;
 import com.ufcg.psoft.vacineja.utils.MapperUtil;
+import com.ufcg.psoft.vacineja.utils.error.exception.ValidacaoException;
+import com.ufcg.psoft.vacineja.utils.error.model.ErroDeSistema;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
-import static java.util.Objects.nonNull;
 
 @Service
 public class VacinaService {
     @Autowired
     private VacinaRepository vacinaRepository;
 
-    public ResponseEntity<?> cadastrarVacina(VacinaDTO vacinaDTO, MapperUtil mapper) {
-        final var validacaoDTO = validarDtoCadastroDeVacina(vacinaDTO);
-        if(nonNull(validacaoDTO)) {
-            return validacaoDTO;
-        }
+    public Vacina cadastrarVacina(VacinaDTO vacinaDTO, MapperUtil mapper) {
+
+        validarDtoCadastroDeVacina(vacinaDTO);
+
         final var vacina = mapper.toEntity(vacinaDTO, Vacina.class);
         vacinaRepository.save(vacina);
-        return new ResponseEntity<>(vacina, HttpStatus.CREATED);
+        return vacina;
     }
 
-    public ResponseEntity<?> buscarPorId(Long id) {
+    public Vacina buscarPorId(Long id) {
         Optional<Vacina> optionalVacina = vacinaRepository.findById(id);
+        if(optionalVacina.isEmpty()) {
+            throw new ValidacaoException(
+                    new ErroDeSistema(ErroVacina.erroVacinaNaoEncontrada(id))
+            );
+        }
+        return optionalVacina.get();
 
-        return optionalVacina.isPresent() ?
-                new ResponseEntity<>(optionalVacina.get(), HttpStatus.OK) :
-                ErroVacina.erroVacinaNaoEncontrada(id);
     }
 
     public List<Vacina> listarVacinas() {
         return vacinaRepository.findAll();
     }
 
-    public ResponseEntity<?> editarVacina(Long id, VacinaDTO vacinaDTO) {
+    public Vacina editarVacina(Long id, VacinaDTO vacinaDTO) {
         Optional<Vacina> optionalVacina = vacinaRepository.findById(id);
 
         if(optionalVacina.isEmpty()) {
-            return ErroVacina.erroVacinaNaoEncontrada(id);
+            throw new ValidacaoException(
+                    new ErroDeSistema(ErroVacina.erroVacinaNaoEncontrada(id))
+            );
         }
 
         Vacina vacina = optionalVacina.get();
@@ -65,34 +66,41 @@ public class VacinaService {
         }
 
         vacinaRepository.save(vacina);
-        return new ResponseEntity<>(vacina, HttpStatus.ACCEPTED);
+        return vacina;
     }
 
-    public ResponseEntity<?> removerVacinaPorId(Long id) {
-
+    public void removerVacinaPorId(Long id) {
         Optional<Vacina> optionalVacina = vacinaRepository.findById(id);
         if(optionalVacina.isEmpty()) {
-            return ErroVacina.erroVacinaNaoEncontrada(id);
+            throw new ValidacaoException(
+                    new ErroDeSistema(ErroVacina.erroVacinaNaoEncontrada(id))
+            );
         }
         vacinaRepository.delete(optionalVacina.get());
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    private ResponseEntity<CustomError> validarDtoCadastroDeVacina(VacinaDTO vacinaDTO) {
+    private void validarDtoCadastroDeVacina(VacinaDTO vacinaDTO) {
         if(vacinaDTO.getFabricante().isBlank()) {
-            return ErroVacina.erroFabricanteNulo();
+            throw new ValidacaoException(
+                    new ErroDeSistema(ErroVacina.erroFabricanteNulo())
+            );
         }
 
         if(vacinaDTO.getDosesRequeridas() > 2 || vacinaDTO.getDosesRequeridas() < 0) {
-            return ErroVacina.erroQuantidadeDeDosesInvalida();
+            throw new ValidacaoException(
+                    new ErroDeSistema(ErroVacina.erroQuantidadeDeDosesInvalida())
+            );
         }
 
         if(vacinaDTO.getDosesRequeridas() > 1 && vacinaDTO.getIntervaloEntreDoses() == 0) {
-            return ErroVacina.erroVacinaSemIntervaloEntreDoses();
+            throw new ValidacaoException(
+                    new ErroDeSistema(ErroVacina.erroVacinaSemIntervaloEntreDoses())
+            );
         } else if(vacinaDTO.getDosesRequeridas() == 1 && vacinaDTO.getIntervaloEntreDoses() > 0) {
-            return ErroVacina.erroVacinaDeDoseUnica();
+            throw new ValidacaoException(
+                    new ErroDeSistema(ErroVacina.erroVacinaDeDoseUnica())
+            );
         }
 
-        return null;
     }
 }

@@ -1,11 +1,8 @@
 package com.ufcg.psoft.vacineja.utils;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
 import static java.lang.String.format;
 
-public class ErroVacina {
+public final class ErroVacina {
 
     private static final String VACINA_NAO_ENCONTRADA = "Vacina com id: %s não foi encontrada.";
 
@@ -18,23 +15,23 @@ public class ErroVacina {
 
     private static final String VACINA_DE_DOSE_UNICA = "Não existe intervalo de dias para vacinas de dose única.";
 
-    public static ResponseEntity<CustomError> erroVacinaNaoEncontrada(Long id) {
-        return new ResponseEntity<>(new CustomError(format(VACINA_NAO_ENCONTRADA, id)), HttpStatus.NOT_FOUND);
+    public static String erroVacinaNaoEncontrada(Long id) {
+        return format(VACINA_NAO_ENCONTRADA, id);
     }
 
-    public static ResponseEntity<CustomError> erroFabricanteNulo() {
-        return new ResponseEntity<>(new CustomError(FABRICANTE_NULO), HttpStatus.BAD_REQUEST);
+    public static String erroFabricanteNulo() {
+        return FABRICANTE_NULO;
     }
 
-    public static ResponseEntity<CustomError> erroQuantidadeDeDosesInvalida() {
-        return new ResponseEntity<>(new CustomError(QUANTIDADE_DE_DOSES_INVALIDA), HttpStatus.BAD_REQUEST);
+    public static String erroQuantidadeDeDosesInvalida() {
+        return QUANTIDADE_DE_DOSES_INVALIDA;
     }
 
-    public static ResponseEntity<CustomError> erroVacinaDeDoseUnica() {
-        return new ResponseEntity<>(new CustomError(VACINA_DE_DOSE_UNICA), HttpStatus.BAD_REQUEST);
+    public static String erroVacinaDeDoseUnica() {
+        return VACINA_DE_DOSE_UNICA;
     }
 
-    public static ResponseEntity<CustomError> erroVacinaSemIntervaloEntreDoses() {
-        return new ResponseEntity<>(new CustomError(SEM_INTERVALO_ENTRE_DOSES), HttpStatus.BAD_REQUEST);
+    public static String erroVacinaSemIntervaloEntreDoses() {
+        return SEM_INTERVALO_ENTRE_DOSES;
     }
 }

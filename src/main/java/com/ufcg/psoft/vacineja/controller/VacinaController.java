@@ -7,7 +7,6 @@ import com.ufcg.psoft.vacineja.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +32,7 @@ public class VacinaController {
 
     @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> cadastrarVacina(@RequestBody VacinaDTO vacinaDTO) {
+    public Vacina cadastrarVacina(@RequestBody VacinaDTO vacinaDTO) {
         return vacinaService.cadastrarVacina(vacinaDTO, mapper);
     }
 
@@ -43,18 +42,19 @@ public class VacinaController {
     }
 
     @GetMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<?> buscarVacinaPorId(@PathVariable Long id) {
+    public Vacina buscarVacinaPorId(@PathVariable Long id) {
         return vacinaService.buscarPorId(id);
     }
 
     @PutMapping(value = "/{id}", consumes = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<?> editarVacina(@PathVariable Long id, @RequestBody VacinaDTO vacinaDTO) {
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public Vacina editarVacina(@PathVariable Long id, @RequestBody VacinaDTO vacinaDTO) {
         return vacinaService.editarVacina(id, vacinaDTO);
     }
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<?> deletarVacina(@PathVariable Long id) {
-        return vacinaService.removerVacinaPorId(id);
+    public void deletarVacina(@PathVariable Long id) {
+        vacinaService.removerVacinaPorId(id);
     }
 }
