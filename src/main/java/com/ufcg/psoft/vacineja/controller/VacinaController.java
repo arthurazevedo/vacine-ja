@@ -7,7 +7,7 @@ import com.ufcg.psoft.vacineja.service.vacina.CadastrarVacina;
 import com.ufcg.psoft.vacineja.service.vacina.EditarVacina;
 import com.ufcg.psoft.vacineja.service.vacina.ListarVacinas;
 import com.ufcg.psoft.vacineja.service.vacina.RemoverVacina;
-import org.modelmapper.ModelMapper;
+import com.ufcg.psoft.vacineja.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -40,8 +40,8 @@ public class VacinaController {
     private EditarVacina editarVacina;
     @Autowired
     private RemoverVacina removerVacina;
-
-    private static final ModelMapper mapper = new ModelMapper();
+    @Autowired
+    private MapperUtil mapper;
 
     @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseStatus(HttpStatus.CREATED)

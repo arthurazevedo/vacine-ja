@@ -5,7 +5,7 @@ import com.ufcg.psoft.vacineja.model.Vacina;
 import com.ufcg.psoft.vacineja.repository.VacinaRepository;
 import com.ufcg.psoft.vacineja.utils.CustomError;
 import com.ufcg.psoft.vacineja.utils.ErroVacina;
-import org.modelmapper.ModelMapper;
+import com.ufcg.psoft.vacineja.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +18,12 @@ public class CadastrarVacina {
     @Autowired
     private VacinaRepository vacinaRepository;
 
-    public ResponseEntity<?> executar(VacinaDTO vacinaDTO, ModelMapper mapper) {
+    public ResponseEntity<?> executar(VacinaDTO vacinaDTO, MapperUtil mapper) {
         final var validacaoDTO = validarCampos(vacinaDTO);
         if(nonNull(validacaoDTO)) {
             return validacaoDTO;
         }
-        final var vacina = mapper.map(vacinaDTO, Vacina.class);
+        final var vacina = mapper.toEntity(vacinaDTO, Vacina.class);
         vacinaRepository.save(vacina);
         return new ResponseEntity<>(vacina, HttpStatus.CREATED);
     }
