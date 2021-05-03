@@ -32,9 +32,7 @@ public class Usuario implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<PerfilUsuario> perfis = new ArrayList<>();
 
-        PerfilUsuario perfilUsuario = (this.perfil.equals(TipoUsuarioEnum.CIDADAO.getValue()))
-                ? new PerfilUsuario(TipoUsuarioEnum.CIDADAO)
-                : new PerfilUsuario(TipoUsuarioEnum.FUNCIONARIO);
+        PerfilUsuario perfilUsuario = new PerfilUsuario(TipoUsuarioEnum.getEnum(this.perfil));
 
         perfis.add(perfilUsuario);
 
