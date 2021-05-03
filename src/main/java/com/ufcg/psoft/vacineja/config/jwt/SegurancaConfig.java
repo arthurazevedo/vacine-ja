@@ -1,7 +1,7 @@
 package com.ufcg.psoft.vacineja.config.jwt;
 
 import com.ufcg.psoft.vacineja.repository.UsuarioRepository;
-import com.ufcg.psoft.vacineja.service.AutenticacaoService;
+import com.ufcg.psoft.vacineja.service.UsuarioService;
 import com.ufcg.psoft.vacineja.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SegurancaConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private AutenticacaoService autenticacaoService;
+    private UsuarioService usuarioService;
 
     @Autowired
     private TokenService tokenService;
@@ -39,7 +39,7 @@ public class SegurancaConfig extends WebSecurityConfigurerAdapter {
     //Configuracao de autenticacao
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(autenticacaoService).passwordEncoder(new BCryptPasswordEncoder());
+        auth.userDetailsService(usuarioService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
     //Configuracao de autorizacao as rotas

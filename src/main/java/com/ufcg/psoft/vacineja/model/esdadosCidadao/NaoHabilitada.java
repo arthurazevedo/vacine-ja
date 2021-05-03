@@ -1,16 +1,17 @@
 package com.ufcg.psoft.vacineja.model.esdadosCidadao;
 
+import javax.persistence.Entity;
+
 import com.ufcg.psoft.vacineja.model.Cidadao;
 
-public class NaoHabilitada implements Estado {
+@Entity
+public class NaoHabilitada extends Estado {
 
 	@Override
-	public void atualiza(Cidadao cidadao, int idadeMinima) {
-		if(cidadao.getIdade() >= idadeMinima || cidadao.temComorbidadeValida() || cidadao.temProfissaoValida()) {
-			cidadao.mudaEstado(new Habilitado1Dose());
-		}
+	public void atualiza(Cidadao cidadao) {
+		cidadao.mudaEstado(new Habilitado1Dose());
 	}
-
+	
 	@Override
 	public void vacina(Cidadao cidadao, int diasEntreDoses, boolean precisaSegundaDose) {}
 	

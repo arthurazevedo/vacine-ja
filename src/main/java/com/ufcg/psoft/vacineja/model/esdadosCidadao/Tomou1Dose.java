@@ -3,9 +3,12 @@ package com.ufcg.psoft.vacineja.model.esdadosCidadao;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
+import javax.persistence.Entity;
+
 import com.ufcg.psoft.vacineja.model.Cidadao;
 
-public class Tomou1Dose implements Estado {
+@Entity
+public class Tomou1Dose extends Estado {
 	
 	private LocalDate dataDaVacina;
 	private int diasEntreDoses;
@@ -16,7 +19,7 @@ public class Tomou1Dose implements Estado {
 	}
 
 	@Override
-	public void atualiza(Cidadao cidadao, int idadeMinima) {
+	public void atualiza(Cidadao cidadao) {
 		if(ChronoUnit.DAYS.between(this.dataDaVacina, LocalDate.now()) >= diasEntreDoses) {
 			cidadao.mudaEstado(new Habilitado2Dose());
 		}
