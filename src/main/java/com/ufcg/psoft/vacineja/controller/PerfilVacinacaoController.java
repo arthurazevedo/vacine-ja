@@ -10,7 +10,7 @@ import java.util.Set;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/perfilVacinacao")
+@RequestMapping("/perfil-vacinacao")
 public class PerfilVacinacaoController {
     @Autowired
     private PerfilVacinacaoService perfilVacinacaoService;
