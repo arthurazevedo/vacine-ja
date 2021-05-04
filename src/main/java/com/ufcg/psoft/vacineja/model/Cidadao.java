@@ -39,6 +39,8 @@ public class Cidadao {
 	private String telefone;
 	private String profissao;
 	private LocalDate nascimento;
+	@Setter(value = AccessLevel.NONE)
+	private String perfil;
 	@ElementCollection
 	private List<String> comorbidades;
 	@Getter(value = AccessLevel.NONE)
@@ -58,6 +60,7 @@ public class Cidadao {
 		this.comorbidades = comorbidades;
 		this.nascimento = nascimento;
 		this.estado = new NaoHabilitada();
+		this.perfil = TipoUsuarioEnum.CIDADAO.getValue();
 	}
 
 	public void atualiza(int idadeMinima, List<String> comorbidadesValidas, List<String> profissoesValidas) {
@@ -80,9 +83,5 @@ public class Cidadao {
 
 	public long getIdade() {
 		return ChronoUnit.YEARS.between(this.nascimento, LocalDate.now());
-	}
-
-	public Object getPerfil() {
-		return TipoUsuarioEnum.CIDADAO.getValue();
 	}
 }

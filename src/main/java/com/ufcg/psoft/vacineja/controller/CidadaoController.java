@@ -16,7 +16,7 @@ public class CidadaoController {
 	@Autowired
 	private UsuarioService usuarioService;
 	
-	@RequestMapping(value = "/cadastra_cidadao", method = RequestMethod.GET)
+	@RequestMapping(value = "/cadastra_cidadao", method = RequestMethod.POST)
 	public ResponseEntity<?> login(@RequestBody CidadaoDTO cidadaoDTO){
 		if(usuarioService.contemUsuario(cidadaoDTO.getEmail())) {
 			return ResponseEntity.badRequest().body("E-mail já cadastrado.");
