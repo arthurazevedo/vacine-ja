@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class CidadaoDTO {
+public class CidadaoRequestDTO {
     private String email;
     private String senha;
 	private String nome;

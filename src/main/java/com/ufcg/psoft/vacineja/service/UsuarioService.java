@@ -1,6 +1,6 @@
 package com.ufcg.psoft.vacineja.service;
 
-import com.ufcg.psoft.vacineja.dtos.CidadaoDTO;
+import com.ufcg.psoft.vacineja.dtos.CidadaoRequestDTO;
 import com.ufcg.psoft.vacineja.model.Usuario;
 import com.ufcg.psoft.vacineja.repository.UsuarioRepository;
 import com.ufcg.psoft.vacineja.utils.MapperUtil;
@@ -41,8 +41,8 @@ public class UsuarioService implements UserDetailsService {
     	usuarioRepository.save(usuario);
     }
 
-	public Usuario adicionaCidadao(CidadaoDTO cidadaoDTO, MapperUtil mapper) {
-		final var usuario = mapper.toEntity(cidadaoDTO, Usuario.class);
+	public Usuario adicionaCidadao(CidadaoRequestDTO cidadaoRequestDTO) {
+		Usuario usuario = new Usuario(cidadaoRequestDTO);
 		usuarioRepository.save(usuario);
 		return usuario;
 	}

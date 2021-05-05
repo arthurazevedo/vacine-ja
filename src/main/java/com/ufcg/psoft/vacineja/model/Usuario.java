@@ -1,5 +1,6 @@
 package com.ufcg.psoft.vacineja.model;
 
+import com.ufcg.psoft.vacineja.dtos.CidadaoRequestDTO;
 import com.ufcg.psoft.vacineja.model.enums.TipoUsuarioEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,11 +16,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -35,15 +34,14 @@ public class Usuario implements UserDetails {
     private String perfil;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cidadao_id")
-    private Cidadao cidadao;
-
-    public Usuario(String email, String senha, String nome, String cpf, String endereco, String sus, String telefone,
-			String profissao, Set<String> comorbidades, LocalDate nascimento) {
-    	this.email = email;
-    	this.senha = senha;
-    	this.cidadao = new Cidadao(nome, cpf, endereco, sus, telefone, profissao, comorbidades, nascimento);
+    private Cidadao tipo;
+    
+    public Usuario(CidadaoRequestDTO dto) {
+		this.email = dto.getEmail();
+    	this.senha = dto.getSenha();
+    	this.tipo = new Cidadao(dto.getNome(), dto.getCpf(), dto.getEndereco(), dto.getSus(), dto.getTelefone(), dto.getProfissao(), dto.getComorbidades(), dto.getNascimento());
     	this.perfil = TipoUsuarioEnum.CIDADAO.getValue();
-    }
+	}
     
     public void tornaFuncionario() {
     	//aqui se transforma cidadão em funcionário

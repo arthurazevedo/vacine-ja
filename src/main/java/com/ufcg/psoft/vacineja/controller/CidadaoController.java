@@ -10,11 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ufcg.psoft.vacineja.dtos.CidadaoDTO;
-import com.ufcg.psoft.vacineja.model.Usuario;
+import com.ufcg.psoft.vacineja.dtos.CidadaoRequestDTO;
+import com.ufcg.psoft.vacineja.dtos.CidadaoResponseDTO;
 import com.ufcg.psoft.vacineja.service.UsuarioService;
 import com.ufcg.psoft.vacineja.utils.ErroCidadao;
-import com.ufcg.psoft.vacineja.utils.MapperUtil;
 
 @RestController
 @RequestMapping("/cidadao")
@@ -22,24 +21,21 @@ public class CidadaoController {
 	@Autowired
 	private UsuarioService usuarioService;
 	
-	@Autowired
-    private MapperUtil mapper;
-	
 	@Value("${hash.forca}")
     private int forcaHash;
 	
 	@RequestMapping(method = RequestMethod.POST, produces="application/json")
-	public ResponseEntity<?> login(@RequestBody CidadaoDTO cidadaoDTO){
+	public ResponseEntity<?> cadastraCidadao(@RequestBody CidadaoRequestDTO cidadaoRequestDTO){
 		
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(forcaHash);
 		
-		if(usuarioService.contemUsuario(cidadaoDTO.getEmail())) {
-			return ResponseEntity.badRequest().body(ErroCidadao.erroEmailJaCadastrado(cidadaoDTO.getEmail()));
+		if(usuarioService.contemUsuario(cidadaoRequestDTO.getEmail())) {
+			return ResponseEntity.badRequest().body(ErroCidadao.erroEmailJaCadastrado(cidadaoRequestDTO.getEmail()));
 		}
 		
-		cidadaoDTO.setSenha(encoder.encode(cidadaoDTO.getSenha()));
-		Usuario usuario = usuarioService.adicionaCidadao(cidadaoDTO, mapper);
+		cidadaoRequestDTO.setSenha(encoder.encode(cidadaoRequestDTO.getSenha()));
+		CidadaoResponseDTO cidadaoResponseDTO = new CidadaoResponseDTO(usuarioService.adicionaCidadao(cidadaoRequestDTO));
 		
-		return new ResponseEntity<Usuario>(usuario, HttpStatus.CREATED);
+		return new ResponseEntity<CidadaoResponseDTO>(cidadaoResponseDTO, HttpStatus.CREATED);
 	}
 }
