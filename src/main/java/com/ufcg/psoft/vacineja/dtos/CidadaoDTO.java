@@ -1,13 +1,15 @@
 package com.ufcg.psoft.vacineja.dtos;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @AllArgsConstructor
 @Getter
+@Setter
 public class CidadaoDTO {
     private String email;
     private String senha;
@@ -17,6 +19,6 @@ public class CidadaoDTO {
 	private String sus;
 	private String telefone;
 	private String profissao;
+	private Set<String> comorbidades;
 	private LocalDate nascimento;
-	private List<String> comorbidades;
 }

@@ -1,15 +1,16 @@
 package com.ufcg.psoft.vacineja.service;
 
+import com.ufcg.psoft.vacineja.dtos.CidadaoDTO;
 import com.ufcg.psoft.vacineja.model.Usuario;
 import com.ufcg.psoft.vacineja.repository.UsuarioRepository;
+import com.ufcg.psoft.vacineja.utils.MapperUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -36,13 +37,13 @@ public class UsuarioService implements UserDetailsService {
     	usuarioRepository.deleteByEmail(email);
     }
     
-    public void adicionaCidadao(String email, String senha, String nome, String cpf, String endereco, String sus, String telefone,
-			String profissao, List<String> comorbidades, LocalDate nascimento) {
-    	Usuario usuario = new Usuario(email, senha, nome, cpf, endereco, sus, telefone, profissao, comorbidades, nascimento);
-    	usuarioRepository.save(usuario);
-    }
-    
     public void salvaUsuario(Usuario usuario) {
     	usuarioRepository.save(usuario);
     }
+
+	public Usuario adicionaCidadao(CidadaoDTO cidadaoDTO, MapperUtil mapper) {
+		final var usuario = mapper.toEntity(cidadaoDTO, Usuario.class);
+		usuarioRepository.save(usuario);
+		return usuario;
+	}
 }

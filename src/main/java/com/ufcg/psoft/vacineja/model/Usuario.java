@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -31,15 +32,17 @@ public class Usuario implements UserDetails {
     private Long id;
     private String email;
     private String senha;
+    private String perfil;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cidadao_id")
     private Cidadao cidadao;
 
     public Usuario(String email, String senha, String nome, String cpf, String endereco, String sus, String telefone,
-			String profissao, List<String> comorbidades, LocalDate nascimento) {
+			String profissao, Set<String> comorbidades, LocalDate nascimento) {
     	this.email = email;
     	this.senha = senha;
     	this.cidadao = new Cidadao(nome, cpf, endereco, sus, telefone, profissao, comorbidades, nascimento);
+    	this.perfil = TipoUsuarioEnum.CIDADAO.getValue();
     }
     
     public void tornaFuncionario() {
@@ -50,9 +53,7 @@ public class Usuario implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<PerfilUsuario> perfis = new ArrayList<>();
 
-        PerfilUsuario perfilUsuario = (this.cidadao.getPerfil().equals(TipoUsuarioEnum.CIDADAO.getValue()))
-                ? new PerfilUsuario(TipoUsuarioEnum.CIDADAO)
-                : new PerfilUsuario(TipoUsuarioEnum.FUNCIONARIO);
+        PerfilUsuario perfilUsuario = new PerfilUsuario(TipoUsuarioEnum.getEnum(this.perfil));
 
         perfis.add(perfilUsuario);
 

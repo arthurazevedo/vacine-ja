@@ -3,6 +3,7 @@ package com.ufcg.psoft.vacineja.model;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
@@ -15,7 +16,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
-import com.ufcg.psoft.vacineja.model.enums.TipoUsuarioEnum;
 import com.ufcg.psoft.vacineja.model.esdadosCidadao.Estado;
 import com.ufcg.psoft.vacineja.model.esdadosCidadao.NaoHabilitada;
 
@@ -39,18 +39,18 @@ public class Cidadao {
 	private String telefone;
 	private String profissao;
 	private LocalDate nascimento;
-	@Setter(value = AccessLevel.NONE)
-	private String perfil;
 	@ElementCollection
-	private List<String> comorbidades;
+	private Set<String> comorbidades;
 	@Getter(value = AccessLevel.NONE)
 	@Setter(value = AccessLevel.NONE)
 	@JoinColumn(name = "estado")
 	@OneToOne(cascade = CascadeType.ALL)
 	private Estado estado;
 	
+	public Cidadao() {}
+	
 	public Cidadao(String nome, String cpf, String endereco, String sus, String telefone,
-			String profissao, List<String> comorbidades, LocalDate nascimento) {
+			String profissao, Set<String> comorbidades, LocalDate nascimento) {
 		this.nome = nome;
 		this.endereco = endereco;
 		this.cpf = cpf;
@@ -60,11 +60,10 @@ public class Cidadao {
 		this.comorbidades = comorbidades;
 		this.nascimento = nascimento;
 		this.estado = new NaoHabilitada();
-		this.perfil = TipoUsuarioEnum.CIDADAO.getValue();
 	}
 
 	public void atualiza(int idadeMinima, List<String> comorbidadesValidas, List<String> profissoesValidas) {
-		if(profissoesValidas.contains(this.profissao) || idadeMinima >= getIdade() ||
+		if(profissoesValidas.contains(this.profissao) || idadeMinima >= calculaIdade() ||
 				temComorbidadesValida(comorbidadesValidas) || !(this.estado instanceof NaoHabilitada ))	
 			this.estado.atualiza(this);
 	}
@@ -81,7 +80,7 @@ public class Cidadao {
 		this.estado = estado;
 	}
 
-	public long getIdade() {
+	public long calculaIdade() {
 		return ChronoUnit.YEARS.between(this.nascimento, LocalDate.now());
 	}
 }
