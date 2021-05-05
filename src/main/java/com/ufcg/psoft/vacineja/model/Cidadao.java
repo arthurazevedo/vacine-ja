@@ -69,8 +69,8 @@ public class Cidadao {
 	}
 	
 	private boolean temComorbidadesValida(List<String> comorbidadesValidas) {
-		for(String comorbidade: this.comorbidades) {
-			if(comorbidadesValidas.contains(comorbidade))
+		for(String comorbidade: comorbidadesValidas) {
+			if(this.comorbidades.contains(comorbidade))
 				return true;
 		}
 		return false;
