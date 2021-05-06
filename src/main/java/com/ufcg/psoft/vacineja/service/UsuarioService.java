@@ -3,7 +3,6 @@ package com.ufcg.psoft.vacineja.service;
 import com.ufcg.psoft.vacineja.dtos.CidadaoRequestDTO;
 import com.ufcg.psoft.vacineja.model.Usuario;
 import com.ufcg.psoft.vacineja.repository.UsuarioRepository;
-import com.ufcg.psoft.vacineja.utils.MapperUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
