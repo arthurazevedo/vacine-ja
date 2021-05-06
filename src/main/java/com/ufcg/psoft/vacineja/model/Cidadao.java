@@ -30,7 +30,7 @@ import lombok.Setter;
 public class Cidadao {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	private String nome;
 	private String cpf;
