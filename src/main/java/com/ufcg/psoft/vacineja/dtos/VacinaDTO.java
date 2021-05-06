@@ -1,4 +1,4 @@
-package com.ufcg.psoft.vacineja.dtos.vacina;
+package com.ufcg.psoft.vacineja.dtos;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

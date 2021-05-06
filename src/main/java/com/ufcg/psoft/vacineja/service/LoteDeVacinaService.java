@@ -1,8 +1,8 @@
 package com.ufcg.psoft.vacineja.service;
 
-import com.ufcg.psoft.vacineja.dtos.loteDeVacina.LoteDeVacinaCreateDTO;
-import com.ufcg.psoft.vacineja.dtos.loteDeVacina.LoteDeVacinaResponseDTO;
-import com.ufcg.psoft.vacineja.dtos.loteDeVacina.LoteDeVacinaUpdateDTO;
+import com.ufcg.psoft.vacineja.dtos.LoteDeVacinaCreateDTO;
+import com.ufcg.psoft.vacineja.dtos.LoteDeVacinaResponseDTO;
+import com.ufcg.psoft.vacineja.dtos.LoteDeVacinaUpdateDTO;
 import com.ufcg.psoft.vacineja.model.LoteDeVacina;
 import com.ufcg.psoft.vacineja.model.Vacina;
 import com.ufcg.psoft.vacineja.repository.LoteRepository;
