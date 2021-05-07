@@ -30,7 +30,10 @@ public class LoteDeVacinaService {
     @Autowired
     private VacinaRepository vacinaRepository;
 
-    public LoteDeVacinaResponseDTO cadastrarLote(LoteDeVacinaCreateDTO loteDeVacinaCreateDTO, MapperUtil mapper) {
+    @Autowired
+    private MapperUtil mapper;
+
+    public LoteDeVacinaResponseDTO cadastrarLote(LoteDeVacinaCreateDTO loteDeVacinaCreateDTO) {
         Optional<Vacina> optionalVacina = vacinaRepository.findById(loteDeVacinaCreateDTO.getVacinaId());
         if(optionalVacina.isEmpty()) {
             throw new ValidacaoException(
@@ -47,7 +50,7 @@ public class LoteDeVacinaService {
          return mapper.toDTO(lote, LoteDeVacinaResponseDTO.class);
     }
 
-    public LoteDeVacinaResponseDTO buscarPorId(Long id, MapperUtil mapper) {
+    public LoteDeVacinaResponseDTO buscarPorId(Long id) {
         Optional<LoteDeVacina> optionalLote = loteRepository.findById(id);
 
         if(optionalLote.isEmpty()) {
@@ -59,13 +62,13 @@ public class LoteDeVacinaService {
         return mapper.toDTO(optionalLote.get(), LoteDeVacinaResponseDTO.class);
     }
 
-    public List<LoteDeVacinaResponseDTO> listarLotesPorVacina(Long vacinaId, MapperUtil mapper) {
+    public List<LoteDeVacinaResponseDTO> listarLotesPorVacina(Long vacinaId) {
         return loteRepository.findAllLotesByVacinaId(vacinaId).stream().map(loteDeVacina ->
                 mapper.toDTO(loteDeVacina, LoteDeVacinaResponseDTO.class)
         ).collect(Collectors.toList());
     }
 
-    public LoteDeVacina editarLote(Long id, LoteDeVacinaUpdateDTO loteDeVacinaUpdateDTO, MapperUtil mapper) {
+    public LoteDeVacina editarLote(Long id, LoteDeVacinaUpdateDTO loteDeVacinaUpdateDTO) {
         Optional<LoteDeVacina> optionalLote = loteRepository.findById(id);
         if(optionalLote.isEmpty()) {
             throw new ValidacaoException(
