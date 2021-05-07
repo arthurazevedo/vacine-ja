@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import com.ufcg.psoft.vacineja.model.Cidadao;
 
 @Entity
-public class Habilitado2Dose extends Estado {
+public class HabilitadoSegundaDose extends Estado {
 
 	@Override
 	public void atualiza(Cidadao cidadao) {}

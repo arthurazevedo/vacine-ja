@@ -9,7 +9,7 @@ public class NaoHabilitada extends Estado {
 
 	@Override
 	public void atualiza(Cidadao cidadao) {
-		cidadao.mudaEstado(new Habilitado1Dose());
+		cidadao.mudaEstado(new HabilitadoPrimeiraDose());
 	}
 	
 	@Override

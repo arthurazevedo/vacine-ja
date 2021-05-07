@@ -2,7 +2,6 @@ package com.ufcg.psoft.vacineja.model;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -62,13 +61,17 @@ public class Cidadao {
 		this.estado = new NaoHabilitada();
 	}
 
-	public void atualiza(int idadeMinima, List<String> comorbidadesValidas, List<String> profissoesValidas) {
-		if(profissoesValidas.contains(this.profissao) || idadeMinima >= calculaIdade() ||
-				temComorbidadesValida(comorbidadesValidas) || !(this.estado instanceof NaoHabilitada ))	
+	public void atualiza(PerfilVacinacao vacinacao) {
+		if(vacinacao.getProfissoes().contains(this.profissao) || vacinacao.getIdade() >= calculaIdade() ||
+				temComorbidadesValida(vacinacao.getComorbidades()) || !(this.estado instanceof NaoHabilitada ))	
 			this.estado.atualiza(this);
 	}
 	
-	private boolean temComorbidadesValida(List<String> comorbidadesValidas) {
+	public void atualiza() {
+		this.estado.atualiza(this);
+	}
+	
+	private boolean temComorbidadesValida(Set<String> comorbidadesValidas) {
 		for(String comorbidade: comorbidadesValidas) {
 			if(this.comorbidades.contains(comorbidade))
 				return true;
