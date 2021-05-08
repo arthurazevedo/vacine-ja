@@ -3,6 +3,7 @@ package com.ufcg.psoft.vacineja.service;
 import com.ufcg.psoft.vacineja.dtos.VacinaDTO;
 import com.ufcg.psoft.vacineja.model.Vacina;
 import com.ufcg.psoft.vacineja.repository.VacinaRepository;
+import com.ufcg.psoft.vacineja.utils.ConverterKeysUnicas;
 import com.ufcg.psoft.vacineja.utils.ErroVacina;
 import com.ufcg.psoft.vacineja.utils.MapperUtil;
 import com.ufcg.psoft.vacineja.utils.error.exception.ValidacaoException;
@@ -19,10 +20,13 @@ public class VacinaService {
     @Autowired
     private VacinaRepository vacinaRepository;
 
-    public Vacina cadastrarVacina(VacinaDTO vacinaDTO, MapperUtil mapper) {
+    @Autowired
+    private MapperUtil mapper;
+
+    public Vacina cadastrarVacina(VacinaDTO vacinaDTO) {
 
         validarDtoCadastroDeVacina(vacinaDTO);
-
+        vacinaDTO.setFabricante(ConverterKeysUnicas.convert(vacinaDTO.getFabricante()));
         final var vacina = mapper.toEntity(vacinaDTO, Vacina.class);
         vacinaRepository.save(vacina);
         return vacina;
@@ -81,9 +85,16 @@ public class VacinaService {
     }
 
     private void validarDtoCadastroDeVacina(VacinaDTO vacinaDTO) {
-        if(vacinaDTO.getFabricante().isBlank()) {
+        String fabricante = vacinaDTO.getFabricante();
+        if(fabricante.isBlank()) {
             throw new ValidacaoException(
                     new ErroDeSistema(ErroVacina.erroFabricanteNulo())
+            );
+        }
+
+        if(vacinaRepository.existsByFabricante(ConverterKeysUnicas.convert(fabricante))) {
+            throw new ValidacaoException(
+                    new ErroDeSistema(ErroVacina.erroFabricanteJaCadastrado(fabricante))
             );
         }
 

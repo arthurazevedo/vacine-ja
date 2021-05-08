@@ -27,13 +27,11 @@ public class VacinaController {
 
     @Autowired
     private VacinaService vacinaService;
-    @Autowired
-    private MapperUtil mapper;
 
     @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseStatus(HttpStatus.CREATED)
     public Vacina cadastrarVacina(@RequestBody VacinaDTO vacinaDTO) {
-        return vacinaService.cadastrarVacina(vacinaDTO, mapper);
+        return vacinaService.cadastrarVacina(vacinaDTO);
     }
 
     @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
