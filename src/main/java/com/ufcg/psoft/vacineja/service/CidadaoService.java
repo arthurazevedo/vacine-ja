@@ -15,7 +15,7 @@ public class CidadaoService {
     @Autowired
     private CidadaoRepository cidadaoRepository;
 
-    public String encontrarCidadaoPorCpf(String cpf) {
+    public String pegarEstadoCidadao(String cpf) {
         Optional<Cidadao> cidadaoOptional = cidadaoRepository.findByCpf(cpf);
         if(cidadaoOptional.isEmpty()) {
             throw new ValidacaoException(

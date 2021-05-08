@@ -39,9 +39,9 @@ public class CidadaoController {
 		return new ResponseEntity<CidadaoResponseDTO>(cidadaoResponseDTO, HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/estado/{cpf}", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/{cpf}/estado", method = RequestMethod.GET, produces="application/json")
 	public ResponseEntity<?> mostrarEstadoCidadao(@PathVariable String cpf) {
-		String estado = cidadaoService.encontrarCidadaoPorCpf(cpf);
+		String estado = cidadaoService.pegarEstadoCidadao(cpf);
 		EstadoCidadaoResponseDTO estadoCidadao = new EstadoCidadaoResponseDTO(estado);
 		return new ResponseEntity<EstadoCidadaoResponseDTO>(estadoCidadao, HttpStatus.OK);
 	}
