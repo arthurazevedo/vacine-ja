@@ -10,6 +10,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ValidacaoException.class)
     public ResponseEntity<?> handleValidacaoException(ValidacaoException exception) {
-        return new ResponseEntity<>(exception.getErro(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(exception.getErro(), exception.getStatus());
     }
 }

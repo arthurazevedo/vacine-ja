@@ -87,4 +87,8 @@ public class Cidadao {
 	public long calculaIdade() {
 		return ChronoUnit.YEARS.between(this.nascimento, LocalDate.now());
 	}
+
+	public String exibeEstado() {
+		return this.estado.toString();
+	}
 }

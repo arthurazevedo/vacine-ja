@@ -8,6 +8,7 @@ import com.ufcg.psoft.vacineja.utils.MapperUtil;
 import com.ufcg.psoft.vacineja.utils.error.exception.ValidacaoException;
 import com.ufcg.psoft.vacineja.utils.error.model.ErroDeSistema;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public class VacinaService {
         Optional<Vacina> optionalVacina = vacinaRepository.findById(id);
         if(optionalVacina.isEmpty()) {
             throw new ValidacaoException(
-                    new ErroDeSistema(ErroVacina.erroVacinaNaoEncontrada(id))
+                    new ErroDeSistema(ErroVacina.erroVacinaNaoEncontrada(id), HttpStatus.NOT_FOUND)
             );
         }
         return optionalVacina.get();
@@ -47,7 +48,7 @@ public class VacinaService {
 
         if(optionalVacina.isEmpty()) {
             throw new ValidacaoException(
-                    new ErroDeSistema(ErroVacina.erroVacinaNaoEncontrada(id))
+                    new ErroDeSistema(ErroVacina.erroVacinaNaoEncontrada(id), HttpStatus.NOT_FOUND)
             );
         }
 
@@ -73,7 +74,7 @@ public class VacinaService {
         Optional<Vacina> optionalVacina = vacinaRepository.findById(id);
         if(optionalVacina.isEmpty()) {
             throw new ValidacaoException(
-                    new ErroDeSistema(ErroVacina.erroVacinaNaoEncontrada(id))
+                    new ErroDeSistema(ErroVacina.erroVacinaNaoEncontrada(id), HttpStatus.NOT_FOUND)
             );
         }
         vacinaRepository.delete(optionalVacina.get());

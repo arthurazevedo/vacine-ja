@@ -5,6 +5,7 @@ import com.ufcg.psoft.vacineja.model.Cidadao;
 import com.ufcg.psoft.vacineja.model.Funcionario;
 import com.ufcg.psoft.vacineja.repository.CidadaoRepository;
 import com.ufcg.psoft.vacineja.repository.FuncionarioRepository;
+import com.ufcg.psoft.vacineja.utils.ErroCidadao;
 import com.ufcg.psoft.vacineja.utils.ErroFuncionario;
 import com.ufcg.psoft.vacineja.utils.MapperUtil;
 import com.ufcg.psoft.vacineja.utils.error.exception.ValidacaoException;
@@ -41,14 +42,24 @@ public class FuncionarioService {
 
         if (naoExisteCidadao) {
             throw new ValidacaoException(
-                    new ErroDeSistema(ErroFuncionario.erroFuncionarioNaoEcontrado(idCidadao))
+                    new ErroDeSistema(ErroCidadao.erroCidadaoNaoEcontrado(idCidadao))
+            );
+        }
+
+        Optional<Funcionario> funcionarioOptional = funcionarioRepository.findByIdCidadao(idCidadao);
+
+        boolean funcionarioExiste = funcionarioOptional.isPresent();
+
+        if (funcionarioExiste) {
+            throw new ValidacaoException(
+                    new ErroDeSistema(ErroFuncionario.erroFuncionarioJaExiste())
             );
         }
 
         Funcionario funcionario = mapper.toEntity(funcionarioDTO, Funcionario.class);
 
         funcionario.setAprovado(false);
-        funcionario.setId(cidadaoOptional.get().getId());
+        funcionario.setIdCidadao(cidadaoOptional.get().getId());
 
         funcionarioRepository.save(funcionario);
     }
