@@ -1,6 +1,6 @@
 package com.ufcg.psoft.vacineja.service;
 
-import com.ufcg.psoft.vacineja.dtos.vacina.VacinaDTO;
+import com.ufcg.psoft.vacineja.dtos.VacinaDTO;
 import com.ufcg.psoft.vacineja.model.Vacina;
 import com.ufcg.psoft.vacineja.repository.VacinaRepository;
 import com.ufcg.psoft.vacineja.utils.ConverterKeysUnicas;
