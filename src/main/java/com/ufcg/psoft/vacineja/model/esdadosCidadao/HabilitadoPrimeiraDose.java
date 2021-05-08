@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import com.ufcg.psoft.vacineja.model.Cidadao;
 
 @Entity
-public class Habilitado1Dose extends Estado {
+public class HabilitadoPrimeiraDose extends Estado {
 	
 	@Override
 	public void atualiza(Cidadao cidadao) {}
@@ -13,7 +13,7 @@ public class Habilitado1Dose extends Estado {
 	@Override
 	public void vacina(Cidadao cidadao, int diasEntreDoses, boolean precisaSegundaDose) {
 		if(precisaSegundaDose)
-			cidadao.mudaEstado(new Tomou1Dose(diasEntreDoses));
+			cidadao.mudaEstado(new TomouPrimeiraDose(diasEntreDoses));
 		else
 			cidadao.mudaEstado(new Finalizado());
 	}

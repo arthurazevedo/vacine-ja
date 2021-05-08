@@ -2,7 +2,6 @@ package com.ufcg.psoft.vacineja.model;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -17,7 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import com.ufcg.psoft.vacineja.model.esdadosCidadao.Estado;
-import com.ufcg.psoft.vacineja.model.esdadosCidadao.NaoHabilitada;
+import com.ufcg.psoft.vacineja.model.esdadosCidadao.NaoHabilitado;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -59,16 +58,21 @@ public class Cidadao {
 		this.profissao = profissao;
 		this.comorbidades = comorbidades;
 		this.nascimento = nascimento;
-		this.estado = new NaoHabilitada();
+		this.estado = new NaoHabilitado();
 	}
 
-	public void atualiza(int idadeMinima, List<String> comorbidadesValidas, List<String> profissoesValidas) {
-		if(profissoesValidas.contains(this.profissao) || idadeMinima >= calculaIdade() ||
-				temComorbidadesValida(comorbidadesValidas) || !(this.estado instanceof NaoHabilitada ))	
+	public void habilita(PerfilVacinacao vacinacao) {
+		if(vacinacao.getProfissoes().contains(this.profissao) || vacinacao.getIdade() >= calculaIdade() ||
+				temComorbidadeValida(vacinacao.getComorbidades()))	
 			this.estado.atualiza(this);
 	}
 	
-	private boolean temComorbidadesValida(List<String> comorbidadesValidas) {
+	public void atualiza() {
+		if(!(this.estado instanceof NaoHabilitado))
+			this.estado.atualiza(this);
+	}
+	
+	private boolean temComorbidadeValida(Set<String> comorbidadesValidas) {
 		for(String comorbidade: comorbidadesValidas) {
 			if(this.comorbidades.contains(comorbidade))
 				return true;

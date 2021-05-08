@@ -5,11 +5,11 @@ import javax.persistence.Entity;
 import com.ufcg.psoft.vacineja.model.Cidadao;
 
 @Entity
-public class NaoHabilitada extends Estado {
+public class NaoHabilitado extends Estado {
 
 	@Override
 	public void atualiza(Cidadao cidadao) {
-		cidadao.mudaEstado(new Habilitado1Dose());
+		cidadao.mudaEstado(new HabilitadoPrimeiraDose());
 	}
 	
 	@Override

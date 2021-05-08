@@ -8,12 +8,12 @@ import javax.persistence.Entity;
 import com.ufcg.psoft.vacineja.model.Cidadao;
 
 @Entity
-public class Tomou1Dose extends Estado {
+public class TomouPrimeiraDose extends Estado {
 	
 	private LocalDate dataDaVacina;
 	private int diasEntreDoses;
 	
-	public Tomou1Dose(int diasEntreDoses) {
+	public TomouPrimeiraDose(int diasEntreDoses) {
 		this.dataDaVacina = LocalDate.now();
 		this.diasEntreDoses = diasEntreDoses;
 	}
@@ -21,7 +21,7 @@ public class Tomou1Dose extends Estado {
 	@Override
 	public void atualiza(Cidadao cidadao) {
 		if(ChronoUnit.DAYS.between(this.dataDaVacina, LocalDate.now()) >= diasEntreDoses) {
-			cidadao.mudaEstado(new Habilitado2Dose());
+			cidadao.mudaEstado(new HabilitadoSegundaDose());
 		}
 	}
 
