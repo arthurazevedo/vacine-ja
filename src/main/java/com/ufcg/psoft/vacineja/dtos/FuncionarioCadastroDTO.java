@@ -9,6 +9,5 @@ public class FuncionarioCadastroDTO {
 
     private String cargo;
     private String localTrabalho;
-    private Long idCidadao;
 
 }
