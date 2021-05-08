@@ -5,7 +5,6 @@ import com.ufcg.psoft.vacineja.dtos.loteDeVacina.LoteDeVacinaResponseDTO;
 import com.ufcg.psoft.vacineja.dtos.loteDeVacina.LoteDeVacinaUpdateDTO;
 import com.ufcg.psoft.vacineja.model.LoteDeVacina;
 import com.ufcg.psoft.vacineja.service.LoteDeVacinaService;
-import com.ufcg.psoft.vacineja.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,28 +28,26 @@ import java.util.List;
 public class LoteDeVacinaController {
     @Autowired
     private LoteDeVacinaService loteDeVacinaService;
-    @Autowired
-    private MapperUtil mapper;
 
     @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseStatus(HttpStatus.CREATED)
     public LoteDeVacinaResponseDTO cadastrarLote(@RequestBody LoteDeVacinaCreateDTO loteDeVacinaCreateDTO) {
-        return loteDeVacinaService.cadastrarLote(loteDeVacinaCreateDTO, mapper);
+        return loteDeVacinaService.cadastrarLote(loteDeVacinaCreateDTO);
     }
 
     @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
     public List<LoteDeVacinaResponseDTO> listarLotes(@RequestParam Long vacinaId) {
-        return loteDeVacinaService.listarLotesPorVacina(vacinaId, mapper);
+        return loteDeVacinaService.listarLotesPorVacina(vacinaId);
     }
 
     @GetMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
     public LoteDeVacinaResponseDTO getLote(@PathVariable Long id) {
-        return loteDeVacinaService.buscarPorId(id, mapper);
+        return loteDeVacinaService.buscarPorId(id);
     }
 
     @PutMapping(value = "/{id}", consumes = { MediaType.APPLICATION_JSON_VALUE })
     public LoteDeVacina editarLote(@PathVariable Long id, @RequestBody LoteDeVacinaUpdateDTO loteDeVacinaUpdateDTO){
-        return loteDeVacinaService.editarLote(id, loteDeVacinaUpdateDTO, mapper);
+        return loteDeVacinaService.editarLote(id, loteDeVacinaUpdateDTO);
     }
 
     @DeleteMapping("/{id}")

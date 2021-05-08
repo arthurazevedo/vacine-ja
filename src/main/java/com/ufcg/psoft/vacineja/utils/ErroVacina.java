@@ -15,6 +15,8 @@ public final class ErroVacina {
 
     private static final String VACINA_DE_DOSE_UNICA = "Não existe intervalo de dias para vacinas de dose única.";
 
+    private static final String FABRICANTE_JA_CADASTRADO = "A vacina do(a) %s já está cadastrada.";
+
     public static String erroVacinaNaoEncontrada(Long id) {
         return format(VACINA_NAO_ENCONTRADA, id);
     }
@@ -33,5 +35,9 @@ public final class ErroVacina {
 
     public static String erroVacinaSemIntervaloEntreDoses() {
         return SEM_INTERVALO_ENTRE_DOSES;
+    }
+
+    public static String erroFabricanteJaCadastrado(String fabricante) {
+        return format(FABRICANTE_JA_CADASTRADO, fabricante);
     }
 }
