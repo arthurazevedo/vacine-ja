@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.PrimaryKeyJoinColumn;
 
 @Entity
-@PrimaryKeyJoinColumn(name="idCidadao")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,6 +19,8 @@ public class Funcionario extends Cidadao {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @PrimaryKeyJoinColumn(name="idCidadao")
+    private Long idCidadao;
     private String cargo;
     private String localTrabalho;
     private boolean aprovado;
