@@ -16,13 +16,21 @@ public class CidadaoService {
     private CidadaoRepository cidadaoRepository;
 
     public String pegarEstadoCidadao(String cpf) {
+        Cidadao cidadao = pegarCidadaoPorCpf(cpf);
+        return cidadao.exibeEstado();
+    }
+
+    public Cidadao pegarCidadaoPorCpf(String cpf) {
         Optional<Cidadao> cidadaoOptional = cidadaoRepository.findByCpf(cpf);
         if(cidadaoOptional.isEmpty()) {
             throw new ValidacaoException(
                     new ErroDeSistema(ErroCidadao.erroCidadaoNaoExiste(cpf))
             );
         }
+        return cidadaoOptional.get();
+    }
 
-        return cidadaoOptional.get().exibeEstado();
+    public void salvaCidadao(Cidadao cidadao) {
+        cidadaoRepository.save(cidadao);
     }
 }
