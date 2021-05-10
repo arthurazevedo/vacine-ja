@@ -21,7 +21,7 @@ public class AtualizadorDeStatusService {
      * Todos os dias de meia noite será chamado o método para atualizar o status de todos
      * os cidadãos.
      */
-    @Scheduled(cron = "*/10 * * * * *", zone = TIME_ZONE)
+    @Scheduled(cron = "0 0 0 * * *", zone = TIME_ZONE)
     public void atualizaStatus() {
         List<Cidadao> cidadaos = cidadaoRepository.findAllCidadaoByEstadoNomeDoEstado("TomouPrimeiraDose");
         for(Cidadao cidadao: cidadaos) {
