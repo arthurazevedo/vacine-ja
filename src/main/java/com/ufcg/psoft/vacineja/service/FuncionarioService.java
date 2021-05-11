@@ -3,9 +3,7 @@ package com.ufcg.psoft.vacineja.service;
 import com.ufcg.psoft.vacineja.dtos.FuncionarioCadastroDTO;
 import com.ufcg.psoft.vacineja.model.Cidadao;
 import com.ufcg.psoft.vacineja.model.Funcionario;
-import com.ufcg.psoft.vacineja.model.TipoUsuario;
 import com.ufcg.psoft.vacineja.model.Usuario;
-import com.ufcg.psoft.vacineja.repository.CidadaoRepository;
 import com.ufcg.psoft.vacineja.repository.FuncionarioRepository;
 import com.ufcg.psoft.vacineja.service.factory.TipoUsuarioFactory;
 import com.ufcg.psoft.vacineja.utils.ErroCidadao;
@@ -18,16 +16,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class FuncionarioService {
 
     @Autowired
     private FuncionarioRepository funcionarioRepository;
-
-    @Autowired
-    private CidadaoRepository cidadaoRepository;
 
     @Autowired
     private MapperUtil mapper;
