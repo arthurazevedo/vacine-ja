@@ -5,6 +5,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,21 +26,28 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Inheritance(strategy = InheritanceType.JOINED)
-public class Cidadao {
+public class Cidadao implements TipoUsuario {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	private String nome;
+
+	@OneToOne
+	private Usuario usuario;
+
+	@Column(unique = true)
 	private String cpf;
+
 	private String endereco;
 	private String sus;
 	private String telefone;
 	private String profissao;
 	private LocalDate nascimento;
+
 	@ElementCollection
 	private Set<String> comorbidades;
+
 	@Getter(value = AccessLevel.NONE)
 	@Setter(value = AccessLevel.NONE)
 	@JoinColumn(name = "estado")

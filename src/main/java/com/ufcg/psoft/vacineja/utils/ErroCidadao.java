@@ -5,7 +5,7 @@ import static java.lang.String.format;
 public class ErroCidadao {
 	private static final String EMAIL_JA_CADASTRADO = "Email: %s já cadastrado.";
 	private static final String CIDADAO_NAO_EXISTE = "O cidadao com CPF %s não existe.";
-    private static final String CIDADAO_INEXISTENTE = "Cidadão de id %s não encontrado.";
+    private static final String CIDADAO_INEXISTENTE = "Cidadão não encontrado.";
 
     public static String erroEmailJaCadastrado(String email) {
         return format(EMAIL_JA_CADASTRADO, email);
@@ -15,7 +15,7 @@ public class ErroCidadao {
         return format(CIDADAO_NAO_EXISTE, cpf);
     }
 
-    public static String erroCidadaoNaoEcontrado(Long id) {
-        return format(CIDADAO_INEXISTENTE, id);
+    public static String erroCidadaoNaoEcontrado() {
+        return CIDADAO_INEXISTENTE;
     }
 }

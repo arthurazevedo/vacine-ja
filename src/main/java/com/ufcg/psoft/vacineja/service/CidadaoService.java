@@ -26,4 +26,8 @@ public class CidadaoService {
 
         return cidadaoOptional.get().exibeEstado();
     }
+
+    public void salvarCidadao(Cidadao cidadao) {
+        cidadaoRepository.save(cidadao);
+    }
 }

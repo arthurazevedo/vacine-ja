@@ -4,25 +4,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class Funcionario extends Cidadao {
+public class Funcionario implements TipoUsuario {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @PrimaryKeyJoinColumn(name="idCidadao")
-    @Column(unique = true)
-    private Long idCidadao;
+    @OneToOne
+    private Cidadao cidadao;
+
     private String cargo;
     private String localTrabalho;
     private boolean aprovado;
+
 }

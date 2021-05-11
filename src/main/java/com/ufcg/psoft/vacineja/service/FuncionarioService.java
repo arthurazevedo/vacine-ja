@@ -3,9 +3,11 @@ package com.ufcg.psoft.vacineja.service;
 import com.ufcg.psoft.vacineja.dtos.FuncionarioCadastroDTO;
 import com.ufcg.psoft.vacineja.model.Cidadao;
 import com.ufcg.psoft.vacineja.model.Funcionario;
+import com.ufcg.psoft.vacineja.model.TipoUsuario;
 import com.ufcg.psoft.vacineja.model.Usuario;
 import com.ufcg.psoft.vacineja.repository.CidadaoRepository;
 import com.ufcg.psoft.vacineja.repository.FuncionarioRepository;
+import com.ufcg.psoft.vacineja.service.factory.TipoUsuarioFactory;
 import com.ufcg.psoft.vacineja.utils.ErroCidadao;
 import com.ufcg.psoft.vacineja.utils.ErroFuncionario;
 import com.ufcg.psoft.vacineja.utils.MapperUtil;
@@ -30,14 +32,19 @@ public class FuncionarioService {
     @Autowired
     private MapperUtil mapper;
 
+    @Autowired
+    private TipoUsuarioFactory tipoUsuarioFactory;
+
     public void cadastrarFuncionario(FuncionarioCadastroDTO funcionarioDTO) {
         Authentication autenticacao = SecurityContextHolder.getContext().getAuthentication();
 
-        Long idCidadao = ((Usuario) autenticacao.getPrincipal()).getTipo().getId();
+        Cidadao cidadaoAuthenticated = (Cidadao) tipoUsuarioFactory.get((Usuario) autenticacao.getPrincipal());
 
-        if (idCidadao == null) {
+        boolean naoExisteCidadao = cidadaoAuthenticated == null;
+
+        if (naoExisteCidadao) {
             throw new ValidacaoException(
-                    new ErroDeSistema(ErroFuncionario.erroIdCidadaoNaoPodeSerNull())
+                    new ErroDeSistema(ErroCidadao.erroCidadaoNaoEcontrado())
             );
         }
 
@@ -48,19 +55,7 @@ public class FuncionarioService {
             );
         }
 
-        Optional<Cidadao> cidadaoOptional = cidadaoRepository.findById(idCidadao);
-
-        boolean naoExisteCidadao = cidadaoOptional.isEmpty();
-
-        if (naoExisteCidadao) {
-            throw new ValidacaoException(
-                    new ErroDeSistema(ErroCidadao.erroCidadaoNaoEcontrado(idCidadao))
-            );
-        }
-
-        Optional<Funcionario> funcionarioOptional = funcionarioRepository.findByIdCidadao(idCidadao);
-
-        boolean funcionarioExiste = funcionarioOptional.isPresent();
+        boolean funcionarioExiste = funcionarioRepository.existsByCidadao(cidadaoAuthenticated);
 
         if (funcionarioExiste) {
             throw new ValidacaoException(
@@ -71,7 +66,7 @@ public class FuncionarioService {
         Funcionario funcionario = mapper.toEntity(funcionarioDTO, Funcionario.class);
 
         funcionario.setAprovado(false);
-        funcionario.setIdCidadao(cidadaoOptional.get().getId());
+        funcionario.setCidadao(cidadaoAuthenticated);
 
         funcionarioRepository.save(funcionario);
     }
