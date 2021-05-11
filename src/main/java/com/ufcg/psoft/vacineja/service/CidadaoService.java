@@ -6,6 +6,7 @@ import com.ufcg.psoft.vacineja.utils.ErroCidadao;
 import com.ufcg.psoft.vacineja.utils.error.exception.ValidacaoException;
 import com.ufcg.psoft.vacineja.utils.error.model.ErroDeSistema;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,10 +20,14 @@ public class CidadaoService {
         Optional<Cidadao> cidadaoOptional = cidadaoRepository.findByCpf(cpf);
         if(cidadaoOptional.isEmpty()) {
             throw new ValidacaoException(
-                    new ErroDeSistema(ErroCidadao.erroCidadaoNaoExiste(cpf))
+                    new ErroDeSistema(ErroCidadao.erroCidadaoNaoExiste(cpf), HttpStatus.NOT_FOUND)
             );
         }
 
         return cidadaoOptional.get().exibeEstado();
+    }
+
+    public void salvarCidadao(Cidadao cidadao) {
+        cidadaoRepository.save(cidadao);
     }
 }
