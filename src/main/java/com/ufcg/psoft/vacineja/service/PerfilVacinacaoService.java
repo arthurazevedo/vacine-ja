@@ -6,6 +6,7 @@ import com.ufcg.psoft.vacineja.utils.ErroPerfilVacinacao;
 import com.ufcg.psoft.vacineja.utils.error.exception.ValidacaoException;
 import com.ufcg.psoft.vacineja.utils.error.model.ErroDeSistema;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -22,7 +23,7 @@ public class PerfilVacinacaoService {
         Optional<PerfilVacinacao> optionalPerfilVacinacao = perfilVacinacaoRepository.findById(perfilId);
         if(optionalPerfilVacinacao.isEmpty()) {
             throw new ValidacaoException(
-                    new ErroDeSistema(ErroPerfilVacinacao.erroAoAcessarPerfil())
+                    new ErroDeSistema(ErroPerfilVacinacao.erroAoAcessarPerfil(), HttpStatus.NOT_FOUND)
             );
         }
         return optionalPerfilVacinacao.get();

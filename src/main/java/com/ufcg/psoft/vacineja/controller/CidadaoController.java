@@ -5,9 +5,11 @@ import com.ufcg.psoft.vacineja.dtos.CidadaoResponseDTO;
 import com.ufcg.psoft.vacineja.dtos.CidadaoUpdateDTO;
 import com.ufcg.psoft.vacineja.dtos.EstadoCidadaoResponseDTO;
 import com.ufcg.psoft.vacineja.model.Cidadao;
+import com.ufcg.psoft.vacineja.model.Usuario;
 import com.ufcg.psoft.vacineja.service.CidadaoService;
 import com.ufcg.psoft.vacineja.service.UsuarioService;
 import com.ufcg.psoft.vacineja.utils.ErroCidadao;
+import com.ufcg.psoft.vacineja.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -18,11 +20,16 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/cidadao")
 public class CidadaoController {
+
 	@Autowired
 	private UsuarioService usuarioService;
+
 	@Autowired
 	private CidadaoService cidadaoService;
-	
+
+	@Autowired
+	private MapperUtil mapperUtil;
+
 	@Value("${hash.forca}")
     private int forcaHash;
 	
@@ -34,10 +41,20 @@ public class CidadaoController {
 		if(usuarioService.contemUsuario(cidadaoRequestDTO.getEmail())) {
 			return ResponseEntity.badRequest().body(ErroCidadao.erroEmailJaCadastrado(cidadaoRequestDTO.getEmail()));
 		}
-		
+
 		cidadaoRequestDTO.setSenha(encoder.encode(cidadaoRequestDTO.getSenha()));
-		CidadaoResponseDTO cidadaoResponseDTO = new CidadaoResponseDTO(usuarioService.adicionaCidadao(cidadaoRequestDTO));
-		
+
+		Usuario usuario = new Usuario(cidadaoRequestDTO);
+
+		usuarioService.salvaUsuario(usuario);
+
+		Cidadao cidadao = mapperUtil.toEntity(cidadaoRequestDTO, Cidadao.class);
+		cidadao.setUsuario(usuario);
+		cidadaoService.salvarCidadao(cidadao);
+
+		CidadaoResponseDTO cidadaoResponseDTO = mapperUtil.toDTO(cidadao, CidadaoResponseDTO.class);
+		cidadaoResponseDTO.setEmail(usuario.getEmail());
+
 		return new ResponseEntity<CidadaoResponseDTO>(cidadaoResponseDTO, HttpStatus.CREATED);
 	}
 

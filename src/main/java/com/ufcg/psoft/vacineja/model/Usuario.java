@@ -32,14 +32,10 @@ public class Usuario implements UserDetails {
     private String email;
     private String senha;
     private String perfil;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cidadao_id")
-    private Cidadao tipo;
     
     public Usuario(CidadaoRequestDTO dto) {
 		this.email = dto.getEmail();
     	this.senha = dto.getSenha();
-    	this.tipo = new Cidadao(dto.getNome(), dto.getCpf(), dto.getEndereco(), dto.getSus(), dto.getTelefone(), dto.getProfissao(), dto.getComorbidades(), dto.getNascimento());
     	this.perfil = TipoUsuarioEnum.CIDADAO.getValue();
 	}
     
