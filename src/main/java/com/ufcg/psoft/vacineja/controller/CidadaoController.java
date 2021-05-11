@@ -2,6 +2,7 @@ package com.ufcg.psoft.vacineja.controller;
 
 import com.ufcg.psoft.vacineja.dtos.CidadaoRequestDTO;
 import com.ufcg.psoft.vacineja.dtos.CidadaoResponseDTO;
+import com.ufcg.psoft.vacineja.dtos.CidadaoUpdateDTO;
 import com.ufcg.psoft.vacineja.dtos.EstadoCidadaoResponseDTO;
 import com.ufcg.psoft.vacineja.model.Cidadao;
 import com.ufcg.psoft.vacineja.model.Usuario;
@@ -62,5 +63,10 @@ public class CidadaoController {
 		String estado = cidadaoService.pegarEstadoCidadao(cpf);
 		EstadoCidadaoResponseDTO estadoCidadao = new EstadoCidadaoResponseDTO(estado);
 		return new ResponseEntity<EstadoCidadaoResponseDTO>(estadoCidadao, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/{cpf}", method = RequestMethod.PUT, produces="application/json")
+	public ResponseEntity<?> mudaDadosCidadao(@PathVariable String cpf, @RequestBody CidadaoUpdateDTO cidadaoUpdateDTO) {
+		return new ResponseEntity<Cidadao>(cidadaoService.atualizaCidadao(cpf, cidadaoUpdateDTO), HttpStatus.OK);
 	}
 }
