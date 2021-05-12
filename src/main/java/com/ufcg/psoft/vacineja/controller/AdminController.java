@@ -30,7 +30,7 @@ public class AdminController {
         return new ResponseEntity<List<FuncionarioResponseDTO>>(response, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/aprovar-cadastro", produces = { MediaType.APPLICATION_JSON_VALUE })
+    @PutMapping(value = "/aprovar-cadastro", produces = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<?> aprovarCadastro(@RequestBody String cpfFuncionario) {
         funcionarioService.aprovarCadastroFuncionario(cpfFuncionario);
         MensagemDTO mensagem = new MensagemDTO("Cadastro aprovado com sucesso!");
