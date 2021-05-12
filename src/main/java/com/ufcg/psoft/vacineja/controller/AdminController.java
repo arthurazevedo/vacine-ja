@@ -27,7 +27,7 @@ public class AdminController {
         for(Funcionario funcionario: funcionariosPendentes) {
             response.add(new FuncionarioResponseDTO(funcionario));
         }
-        return ResponseEntity.status(200).body(response);
+        return new ResponseEntity<List<FuncionarioResponseDTO>>(response, HttpStatus.OK);
     }
 
     @PostMapping(value = "/aprovar-cadastro", produces = { MediaType.APPLICATION_JSON_VALUE })
