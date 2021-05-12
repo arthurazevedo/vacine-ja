@@ -16,6 +16,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FuncionarioService {
 
@@ -62,5 +64,9 @@ public class FuncionarioService {
         funcionario.setCidadao(cidadaoAuthenticated);
 
         funcionarioRepository.save(funcionario);
+    }
+
+    public List<Funcionario> getFuncionariosPendentes() {
+        return funcionarioRepository.findAllByAprovado(false);
     }
 }
