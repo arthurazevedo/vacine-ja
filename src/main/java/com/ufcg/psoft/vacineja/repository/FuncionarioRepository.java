@@ -14,4 +14,5 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> 
     Optional<Funcionario> findByCidadaoUsuario(Usuario usuario);
     boolean existsByCidadao(Cidadao cidadao);
     List<Funcionario> findAllByAprovado(boolean aprovado);
+    Optional<Funcionario> findFuncionarioByCidadaoCpf(String cpf);
 }

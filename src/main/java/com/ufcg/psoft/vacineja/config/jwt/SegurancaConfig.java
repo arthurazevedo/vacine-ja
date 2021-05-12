@@ -50,8 +50,6 @@ public class SegurancaConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
                 .antMatchers("/cidadao/**").permitAll()
                 .antMatchers("/h2/**").permitAll()
-                .antMatchers("/admin/**").permitAll()
-                .antMatchers("/funcionario/**").permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
