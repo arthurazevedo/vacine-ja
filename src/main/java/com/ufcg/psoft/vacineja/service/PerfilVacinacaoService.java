@@ -19,6 +19,9 @@ public class PerfilVacinacaoService {
     @Autowired
     private PerfilVacinacaoRepository perfilVacinacaoRepository;
 
+    @Autowired
+    private CidadaoService cidadaoService;
+
     private PerfilVacinacao pegarPerfil() {
         Optional<PerfilVacinacao> optionalPerfilVacinacao = perfilVacinacaoRepository.findById(perfilId);
         if(optionalPerfilVacinacao.isEmpty()) {
@@ -51,6 +54,8 @@ public class PerfilVacinacaoService {
         PerfilVacinacao perfilVacinacao = this.pegarPerfil();
         perfilVacinacao.adicionarProfissao(novaProfissao);
         perfilVacinacaoRepository.save(perfilVacinacao);
+
+        cidadaoService.atualizaEstadoDeCidadaosAdequadosPorProfissao(novaProfissao);
     }
 
     public void adicionarComorbidade(String novaComorbidade) {
@@ -63,6 +68,7 @@ public class PerfilVacinacaoService {
         PerfilVacinacao perfilVacinacao =  this.pegarPerfil();
         perfilVacinacao.adicionarComorbidade(novaComorbidade);
         perfilVacinacaoRepository.save(perfilVacinacao);
+        cidadaoService.atualizaEstadoDeCidadaosAdequadosPorComorbidade(novaComorbidade);
     }
 
     public void alterarIdadeMinima(int novaIdade) {
@@ -75,5 +81,6 @@ public class PerfilVacinacaoService {
         }
         perfilVacinacao.setIdade(novaIdade);
         perfilVacinacaoRepository.save(perfilVacinacao);
+        cidadaoService.atualizaEstadoDeCidadaosAcimaDaIdadeMinima(novaIdade);
     }
 }
