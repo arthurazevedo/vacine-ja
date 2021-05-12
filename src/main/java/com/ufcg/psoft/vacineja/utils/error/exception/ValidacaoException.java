@@ -1,6 +1,7 @@
 package com.ufcg.psoft.vacineja.utils.error.exception;
 
 import com.ufcg.psoft.vacineja.utils.error.model.ErroDeSistema;
+import org.springframework.http.HttpStatus;
 
 public class ValidacaoException extends RuntimeException {
     private final ErroDeSistema erroDeSistema;
@@ -12,4 +13,6 @@ public class ValidacaoException extends RuntimeException {
     public ErroDeSistema getErro() {
         return this.erroDeSistema;
     }
+
+    public HttpStatus getStatus() { return this.erroDeSistema.getStatus(); }
 }

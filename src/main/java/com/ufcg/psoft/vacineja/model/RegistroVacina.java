@@ -5,25 +5,31 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import java.util.Date;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class Funcionario implements TipoUsuario {
+public class RegistroVacina {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @OneToOne
     private Cidadao cidadao;
 
-    private String cargo;
-    private String localTrabalho;
-    private boolean aprovado;
+    private Date data;
+
+    @OneToOne
+    private LoteDeVacina loteDeVacina;
+
+    @OneToOne
+    private Vacina vacina;
+
+    private String tipo_vacina;
+
+    private int numero_dose; // 1 ou 2
 
 }

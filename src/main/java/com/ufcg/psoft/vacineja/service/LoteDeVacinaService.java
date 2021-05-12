@@ -13,6 +13,7 @@ import com.ufcg.psoft.vacineja.utils.MapperUtil;
 import com.ufcg.psoft.vacineja.utils.error.exception.ValidacaoException;
 import com.ufcg.psoft.vacineja.utils.error.model.ErroDeSistema;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -37,7 +38,7 @@ public class LoteDeVacinaService {
         Optional<Vacina> optionalVacina = vacinaRepository.findById(loteDeVacinaCreateDTO.getVacinaId());
         if(optionalVacina.isEmpty()) {
             throw new ValidacaoException(
-                    new ErroDeSistema(ErroVacina.erroVacinaNaoEncontrada(loteDeVacinaCreateDTO.getVacinaId()))
+                    new ErroDeSistema(ErroVacina.erroVacinaNaoEncontrada(loteDeVacinaCreateDTO.getVacinaId()), HttpStatus.NOT_FOUND)
             );
         }
 
@@ -55,7 +56,7 @@ public class LoteDeVacinaService {
 
         if(optionalLote.isEmpty()) {
             throw new ValidacaoException(
-                    new ErroDeSistema(ErroLote.erroLoteNaoEcontrado(id))
+                    new ErroDeSistema(ErroLote.erroLoteNaoEcontrado(id), HttpStatus.NOT_FOUND)
             );
         }
 
@@ -72,7 +73,7 @@ public class LoteDeVacinaService {
         Optional<LoteDeVacina> optionalLote = loteRepository.findById(id);
         if(optionalLote.isEmpty()) {
             throw new ValidacaoException(
-                    new ErroDeSistema(ErroLote.erroLoteNaoEcontrado(id))
+                    new ErroDeSistema(ErroLote.erroLoteNaoEcontrado(id), HttpStatus.NOT_FOUND)
             );
         }
 
@@ -90,7 +91,7 @@ public class LoteDeVacinaService {
         Optional<Vacina> optionalVacina = vacinaRepository.findById(loteDeVacinaUpdateDTO.getVacinaId());
         if(optionalVacina.isEmpty()) {
             throw new ValidacaoException(
-                    new ErroDeSistema(ErroVacina.erroVacinaNaoEncontrada(loteDeVacinaUpdateDTO.getVacinaId()))
+                    new ErroDeSistema(ErroVacina.erroVacinaNaoEncontrada(loteDeVacinaUpdateDTO.getVacinaId()), HttpStatus.NOT_FOUND)
             );
         } else {
             lote.setVacina(optionalVacina.get());
@@ -104,7 +105,7 @@ public class LoteDeVacinaService {
         Optional<LoteDeVacina> optionalLote = loteRepository.findById(id);
         if(optionalLote.isEmpty()) {
             throw new ValidacaoException(
-                   new ErroDeSistema(ErroLote.erroLoteNaoEcontrado(id))
+                   new ErroDeSistema(ErroLote.erroLoteNaoEcontrado(id), HttpStatus.NOT_FOUND)
             );
         }
 
