@@ -65,8 +65,8 @@ public class CidadaoController {
 		return new ResponseEntity<EstadoCidadaoResponseDTO>(estadoCidadao, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/{cpf}", method = RequestMethod.PUT, produces="application/json")
-	public ResponseEntity<?> mudaDadosCidadao(@PathVariable String cpf, @RequestBody CidadaoUpdateDTO cidadaoUpdateDTO) {
-		return new ResponseEntity<Cidadao>(cidadaoService.atualizaCidadao(cpf, cidadaoUpdateDTO), HttpStatus.OK);
+	@RequestMapping(method = RequestMethod.PUT, produces="application/json")
+	public ResponseEntity<?> mudaDadosCidadao(@RequestBody CidadaoUpdateDTO cidadaoUpdateDTO) {
+		return new ResponseEntity<Cidadao>(cidadaoService.atualizaCidadao(cidadaoUpdateDTO), HttpStatus.OK);
 	}
 }
