@@ -75,6 +75,7 @@ public class CidadaoService {
     }
 
     public void salvarCidadao(Cidadao cidadao) {
+        cidadao.habilita(getPerfilVacinacao());
         cidadaoRepository.save(cidadao);
     }
 
