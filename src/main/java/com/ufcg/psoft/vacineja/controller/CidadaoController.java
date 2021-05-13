@@ -10,6 +10,8 @@ import com.ufcg.psoft.vacineja.service.CidadaoService;
 import com.ufcg.psoft.vacineja.service.UsuarioService;
 import com.ufcg.psoft.vacineja.utils.ErroCidadao;
 import com.ufcg.psoft.vacineja.utils.MapperUtil;
+import com.ufcg.psoft.vacineja.utils.error.exception.ValidacaoException;
+import com.ufcg.psoft.vacineja.utils.error.model.ErroDeSistema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -39,7 +41,15 @@ public class CidadaoController {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(forcaHash);
 		
 		if(usuarioService.contemUsuario(cidadaoRequestDTO.getEmail())) {
-			return ResponseEntity.badRequest().body(ErroCidadao.erroEmailJaCadastrado(cidadaoRequestDTO.getEmail()));
+			throw new ValidacaoException(new ErroDeSistema(
+				ErroCidadao.erroEmailJaCadastrado(cidadaoRequestDTO.getEmail()), HttpStatus.BAD_REQUEST)
+			);
+		}
+
+		if(cidadaoService.contemCidadao(cidadaoRequestDTO.getCpf())) {
+			throw new ValidacaoException(new ErroDeSistema(
+				ErroCidadao.erroCpfJaCadastrado(cidadaoRequestDTO.getCpf()), HttpStatus.BAD_REQUEST)
+			);
 		}
 
 		cidadaoRequestDTO.setSenha(encoder.encode(cidadaoRequestDTO.getSenha()));
