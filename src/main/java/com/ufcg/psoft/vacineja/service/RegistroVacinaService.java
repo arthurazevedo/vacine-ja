@@ -30,11 +30,8 @@ public class RegistroVacinaService {
     private LoteRepository loteRepository;
 
     public RegistroVacina cadastrar(RegistrosRequestDTO registro) {
-        if (registro.getCpf() == null) {
-            throw new ValidacaoException(
-                    new ErroDeSistema("CPF do Cidadao precisa ser informado.")
-            );
-        }
+
+        validacoes(registro);
 
         Optional<Cidadao> cidadaoOptional = cidadaoRepository.findByCpf(registro.getCpf());
 
@@ -46,12 +43,6 @@ public class RegistroVacinaService {
 
         Cidadao cidadao = cidadaoOptional.get();
 
-        if (registro.getLote() == null) {
-            throw new ValidacaoException(
-                    new ErroDeSistema("Lote precisa ser informado.")
-            );
-        }
-
         Optional<LoteDeVacina> loteOptional = loteRepository.findById(registro.getLote());
 
         if (loteOptional.isEmpty()) {
@@ -61,6 +52,38 @@ public class RegistroVacinaService {
         }
 
         LoteDeVacina lote = loteOptional.get();
+
+        if (lote.getNumDoses() <= 0) {
+            throw new ValidacaoException(
+                    new ErroDeSistema(ErroLote.erroLoteNaoDisponivel(registro.getLote()))
+            );
+        }
+
+        lote.setNumDoses(lote.getNumDoses() - 1);
+
+        loteRepository.save(lote);
+
+        RegistroVacina registroData = new RegistroVacina(cidadao, registro.getData(), lote, lote.getVacina(),
+                registro.getNumeroDose());
+
+        registroVacinaRepository.save(registroData);
+
+
+        return registroData;
+    }
+
+    private void validacoes(RegistrosRequestDTO registro) {
+        if (registro.getCpf() == null) {
+            throw new ValidacaoException(
+                    new ErroDeSistema("CPF do Cidadao precisa ser informado.")
+            );
+        }
+
+        if (registro.getLote() == null) {
+            throw new ValidacaoException(
+                    new ErroDeSistema("Lote precisa ser informado.")
+            );
+        }
 
         if (registro.getData() == null) {
             throw new ValidacaoException(
@@ -73,14 +96,6 @@ public class RegistroVacinaService {
                     new ErroDeSistema("Informe o numero da dose.")
             );
         }
-
-        RegistroVacina registroData = new RegistroVacina(cidadao, registro.getData(), lote, lote.getVacina(),
-                registro.getNumeroDose());
-
-        registroVacinaRepository.save(registroData);
-
-
-        return registroData;
     }
 
 }

@@ -2,6 +2,7 @@ package com.ufcg.psoft.vacineja.controller;
 
 import com.ufcg.psoft.vacineja.dtos.LoteDeVacinaResponseDTO;
 import com.ufcg.psoft.vacineja.dtos.RegistrosRequestDTO;
+import com.ufcg.psoft.vacineja.dtos.RegistrosResponseDTO;
 import com.ufcg.psoft.vacineja.model.RegistroVacina;
 import com.ufcg.psoft.vacineja.service.RegistroVacinaService;
 import com.ufcg.psoft.vacineja.utils.MapperUtil;
@@ -24,11 +25,13 @@ public class RegistroVacinaController {
 
     @PostMapping
     public ResponseEntity<?> registrar(@RequestBody RegistrosRequestDTO body) {
-        RegistroVacina lote = registroVacinaService.cadastrar(body);
+        RegistroVacina registro = registroVacinaService.cadastrar(body);
 
-        LoteDeVacinaResponseDTO loteResponse = mapper.toDTO(lote, LoteDeVacinaResponseDTO.class);
+        RegistrosResponseDTO registroResponse = mapper.toDTO(registro, RegistrosResponseDTO.class);
 
-        return ResponseEntity.status(201).body(loteResponse);
+        registroResponse.getCidadao().setEmail(registro.getCidadao().getUsuario().getEmail());
+
+        return ResponseEntity.status(201).body(registroResponse);
     }
 
 }
