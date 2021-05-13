@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import java.util.Date;
@@ -15,6 +17,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class RegistroVacina {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @OneToOne
@@ -28,8 +31,13 @@ public class RegistroVacina {
     @OneToOne
     private Vacina vacina;
 
-    private String tipo_vacina;
+    private int numeroDose; // 1 ou 2
 
-    private int numero_dose; // 1 ou 2
-
+    public RegistroVacina(Cidadao cidadao, Date data, LoteDeVacina loteDeVacina, Vacina vacina, int numeroDose) {
+        this.cidadao = cidadao;
+        this.data = data;
+        this.loteDeVacina = loteDeVacina;
+        this.vacina = vacina;
+        this.numeroDose = numeroDose;
+    }
 }
