@@ -3,9 +3,13 @@ package com.ufcg.psoft.vacineja.service;
 import com.ufcg.psoft.vacineja.dtos.CidadaoUpdateDTO;
 import com.ufcg.psoft.vacineja.model.Cidadao;
 import com.ufcg.psoft.vacineja.model.Usuario;
+import com.ufcg.psoft.vacineja.model.PerfilVacinacao;
 import com.ufcg.psoft.vacineja.repository.CidadaoRepository;
 import com.ufcg.psoft.vacineja.service.factory.TipoUsuarioFactory;
+import com.ufcg.psoft.vacineja.repository.PerfilVacinacaoRepository;
+import com.ufcg.psoft.vacineja.utils.ConverterKeysUnicas;
 import com.ufcg.psoft.vacineja.utils.ErroCidadao;
+import com.ufcg.psoft.vacineja.utils.ErroPerfilVacinacao;
 import com.ufcg.psoft.vacineja.utils.error.exception.ValidacaoException;
 import com.ufcg.psoft.vacineja.utils.error.model.ErroDeSistema;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +18,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,6 +30,9 @@ public class CidadaoService {
 	
     @Autowired
     private CidadaoRepository cidadaoRepository;
+
+    @Autowired
+    private PerfilVacinacaoRepository perfilVacinacaoRepository;
 
     public String pegarEstadoCidadao(String cpf) {
         Optional<Cidadao> cidadaoOptional = cidadaoRepository.findByCpf(cpf);
@@ -78,6 +87,46 @@ public class CidadaoService {
     }
 
     public void salvarCidadao(Cidadao cidadao) {
+        cidadao.habilita(getPerfilVacinacao());
         cidadaoRepository.save(cidadao);
+    }
+
+    public void atualizaEstadoDeCidadaosAcimaDaIdadeMinima(int idadeMinima) {
+        LocalDate dataDeNascimento = LocalDate.now().minusYears(idadeMinima);
+        List<Cidadao> cidadaos = cidadaoRepository.listAllCidadaosAcimaDaIdadeMinima(dataDeNascimento);
+        cidadaos.forEach(cidadao -> cidadao.habilita(getPerfilVacinacao()));
+
+        cidadaoRepository.saveAll(cidadaos);
+    }
+
+    public void atualizaEstadoDeCidadaosAdequadosPorComorbidade(String comorbidade) {
+
+        List<Long> cidadaosIds = cidadaoRepository
+                .findAllCidadaosIdsComComorbidadesDentroDoPerfil(ConverterKeysUnicas.convert(comorbidade));
+
+        List<Cidadao> cidadaos = cidadaoRepository.findAllById(cidadaosIds);
+        cidadaos.forEach(cidadao -> cidadao.habilita(getPerfilVacinacao()));
+
+        cidadaoRepository.saveAll(cidadaos);
+
+    }
+
+    public void atualizaEstadoDeCidadaosAdequadosPorProfissao(String profissao) {
+
+        List<Cidadao> cidadaos = cidadaoRepository
+                .findAllCidadaosComProfissaoDentroDoPerfil(ConverterKeysUnicas.convert(profissao));
+        cidadaos.forEach(cidadao -> cidadao.habilita(getPerfilVacinacao()));
+
+        cidadaoRepository.saveAll(cidadaos);
+    }
+
+    private PerfilVacinacao getPerfilVacinacao() {
+        Optional<PerfilVacinacao> optionalPerfilVacinacao = perfilVacinacaoRepository.findById(1L);
+        if (optionalPerfilVacinacao.isEmpty()) {
+            throw new ValidacaoException(
+                    new ErroDeSistema(ErroPerfilVacinacao.erroAoAcessarPerfil())
+            );
+        }
+        return optionalPerfilVacinacao.get();
     }
 }

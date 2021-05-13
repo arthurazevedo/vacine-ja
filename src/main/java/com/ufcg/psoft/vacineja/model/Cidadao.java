@@ -1,8 +1,11 @@
 package com.ufcg.psoft.vacineja.model;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.Set;
+import com.ufcg.psoft.vacineja.model.esdadosCidadao.Estado;
+import com.ufcg.psoft.vacineja.model.esdadosCidadao.NaoHabilitado;
+import com.ufcg.psoft.vacineja.utils.ConverterKeysUnicas;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,13 +16,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-
-import com.ufcg.psoft.vacineja.model.esdadosCidadao.Estado;
-import com.ufcg.psoft.vacineja.model.esdadosCidadao.NaoHabilitado;
-
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -50,7 +50,7 @@ public class Cidadao implements TipoUsuario {
 	@Setter(value = AccessLevel.NONE)
 	@JoinColumn(name = "estado")
 	@OneToOne(cascade = CascadeType.ALL)
-	private Estado estado;
+	private Estado estado = new NaoHabilitado();
 	
 	public Cidadao() {}
 	
@@ -61,14 +61,13 @@ public class Cidadao implements TipoUsuario {
 		this.cpf = cpf;
 		this.sus = sus;
 		this.telefone = telefone;
-		this.profissao = profissao;
+		this.profissao = ConverterKeysUnicas.convert(profissao);
 		this.comorbidades = comorbidades;
 		this.nascimento = nascimento;
-		this.estado = new NaoHabilitado();
 	}
 
 	public void habilita(PerfilVacinacao vacinacao) {
-		if(vacinacao.getProfissoes().contains(this.profissao) || vacinacao.getIdade() >= calculaIdade() ||
+		if(vacinacao.getProfissoes().contains(this.profissao) || calculaIdade() >= vacinacao.getIdade() ||
 				temComorbidadeValida(vacinacao.getComorbidades()))	
 			this.estado.atualiza(this);
 	}
@@ -96,5 +95,16 @@ public class Cidadao implements TipoUsuario {
 
 	public String exibeEstado() {
 		return this.estado.toString();
+	}
+
+	public void setProfissao(String profissao) {
+		this.profissao = ConverterKeysUnicas.convert(profissao);
+	}
+
+	public void setComorbidades(Set<String> comorbidades) {
+		this.comorbidades = comorbidades
+				.stream()
+				.map(ConverterKeysUnicas::convert)
+				.collect(Collectors.toSet());
 	}
 }
