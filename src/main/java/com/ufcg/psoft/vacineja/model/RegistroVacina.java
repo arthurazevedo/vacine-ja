@@ -28,8 +28,13 @@ public class RegistroVacina {
     @OneToOne
     private Vacina vacina;
 
-    private String tipo_vacina;
+    private int numeroDose; // 1 ou 2
 
-    private int numero_dose; // 1 ou 2
-
+    public RegistroVacina(Cidadao cidadao, Date data, LoteDeVacina loteDeVacina, Vacina vacina, int numeroDose) {
+        this.cidadao = cidadao;
+        this.data = data;
+        this.loteDeVacina = loteDeVacina;
+        this.vacina = vacina;
+        this.numeroDose = numeroDose;
+    }
 }
