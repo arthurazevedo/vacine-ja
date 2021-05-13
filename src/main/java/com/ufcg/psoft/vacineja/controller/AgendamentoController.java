@@ -21,11 +21,7 @@ public class AgendamentoController {
 	
 	@RequestMapping(value = "/{email}", method = RequestMethod.POST)
 	public ResponseEntity<?> agendaHorario(@RequestBody AgendamentoDTO agendamentoDTO, @PathVariable String email){
-		if(!agendamentoService.horarioEstaVago(agendamentoDTO.getHorario())) {
-			return ResponseEntity.badRequest().body("Horário Indisponível");
-		}
 		agendamentoService.salvaAgendamento(agendamentoDTO, email);
-		
 		return new ResponseEntity<AgendamentoDTO>(agendamentoDTO, HttpStatus.CREATED);
 	}
 }
