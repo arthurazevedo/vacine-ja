@@ -7,6 +7,10 @@ import com.ufcg.psoft.vacineja.model.Cidadao;
 @Entity
 public class HabilitadoSegundaDose extends Estado {
 
+	public HabilitadoSegundaDose() {
+		this.nomeDoEstado = "HabilitadoSegundaDose";
+	}
+
 	@Override
 	public void atualiza(Cidadao cidadao) {}
 

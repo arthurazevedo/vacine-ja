@@ -56,14 +56,22 @@ public class CidadaoService {
     private int forcaHash;
 
     public String pegarEstadoCidadao(String cpf) {
+        Cidadao cidadao = pegarCidadaoPorCpf(cpf);
+        return cidadao.exibeEstado();
+    }
+
+    public Cidadao pegarCidadaoPorCpf(String cpf) {
         Optional<Cidadao> cidadaoOptional = cidadaoRepository.findByCpf(cpf);
         if(cidadaoOptional.isEmpty()) {
             throw new ValidacaoException(
                     new ErroDeSistema(ErroCidadao.erroCidadaoNaoExiste(cpf), HttpStatus.NOT_FOUND)
             );
         }
+        return cidadaoOptional.get();
+    }
 
-        return cidadaoOptional.get().exibeEstado();
+    public void salvaCidadao(Cidadao cidadao) {
+        cidadaoRepository.save(cidadao);
     }
     
     public boolean contemCidadao(String cpf) {

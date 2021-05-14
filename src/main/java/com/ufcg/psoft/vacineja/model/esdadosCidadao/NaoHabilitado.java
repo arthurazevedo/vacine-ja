@@ -7,6 +7,10 @@ import com.ufcg.psoft.vacineja.model.Cidadao;
 @Entity
 public class NaoHabilitado extends Estado {
 
+	public NaoHabilitado() {
+		this.nomeDoEstado = "NaoHabilitado";
+	}
+
 	@Override
 	public void atualiza(Cidadao cidadao) {
 		cidadao.mudaEstado(new HabilitadoPrimeiraDose());

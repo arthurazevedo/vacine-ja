@@ -15,6 +15,7 @@ public abstract class Estado {
 	@Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+	protected String nomeDoEstado;
 	
 	public abstract void atualiza(Cidadao cidadao);
 
