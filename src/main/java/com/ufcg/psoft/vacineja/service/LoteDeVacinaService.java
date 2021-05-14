@@ -111,4 +111,28 @@ public class LoteDeVacinaService {
 
         loteRepository.delete(optionalLote.get());
     }
+    
+    public LoteDeVacina removeUnidadesDoLote(Long id) {
+    	Optional<LoteDeVacina> loteOptional = loteRepository.findById(id);
+
+        if (loteOptional.isEmpty()) {
+            throw new ValidacaoException(
+                    new ErroDeSistema(ErroLote.erroLoteNaoEcontrado(id), HttpStatus.NOT_FOUND)
+            );
+        }
+
+        LoteDeVacina lote = loteOptional.get();
+
+        if (lote.getNumDoses() <= 0) {
+            throw new ValidacaoException(
+                    new ErroDeSistema(ErroLote.erroLoteNaoDisponivel(id))
+            );
+        }
+
+        lote.setNumDoses(lote.getNumDoses() - 1);
+
+        loteRepository.save(lote);
+        
+        return lote;
+    }
 }

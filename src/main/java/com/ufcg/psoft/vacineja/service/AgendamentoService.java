@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.ufcg.psoft.vacineja.dtos.AgendamentoDTO;
@@ -18,49 +20,53 @@ import com.ufcg.psoft.vacineja.utils.error.model.ErroDeSistema;
 
 @Service
 public class AgendamentoService {
-	@Autowired
-	private AgendamentoRepository agendamentoRepository;
 	
 	@Autowired
-	private UsuarioService usuarioService;
+	private AgendamentoRepository agendamentoRepository;
 	
 	@Autowired
 	private TipoUsuarioFactory usuarioFactory;
 	
 	public void salvaAgendamento(AgendamentoDTO agendamentoDTO, String email) {
-		Usuario usuario = (Usuario) usuarioService.loadUserByUsername(email);
+		Authentication autenticacao = SecurityContextHolder.getContext().getAuthentication();
+		
+		Usuario usuario = (Usuario) autenticacao.getPrincipal();
 			
-		if(autorizadoAgendar(usuario) || agendamentoDTO.getHorario() == null) {
+		autorizadoAgendar(usuario);
+		
+		if(agendamentoDTO.getHorario() == null) {
             throw new ValidacaoException(
-                 new ErroDeSistema(ErroAgendamento.erroNaoAutorizado(), HttpStatus.BAD_REQUEST)
+                 new ErroDeSistema("Horário não pode ser nulo", HttpStatus.BAD_REQUEST)
             );
         }
 		
-		if(!horarioEstaVago(agendamentoDTO.getHorario()) || agendamentoDTO.getHorario().before(new Date())) {
-            throw new ValidacaoException(
-                 new ErroDeSistema(ErroAgendamento.erroHorarioIndisponivel(agendamentoDTO.getHorario()), HttpStatus.BAD_REQUEST)
-            );
-        }
+		horarioEstaVago(agendamentoDTO.getHorario());
 		
 		agendamentoRepository.save(new Agendamento(agendamentoDTO.getHorario(), usuario));
 	}
 	
-	public boolean horarioEstaVago(Date horario) {
-		return !agendamentoRepository.existsByLessThanTenMinInterval(horario);
+	public void horarioEstaVago(Date horario) {
+		if(agendamentoRepository.existsByLessThanTenMinInterval(horario) || horario.before(new Date())) {
+			throw new ValidacaoException(
+		         new ErroDeSistema(ErroAgendamento.erroHorarioIndisponivel(horario), HttpStatus.BAD_REQUEST)
+		    );
+        }
 	}
 	
 	
-	public boolean autorizadoAgendar(Usuario usuario) {
-		
+	public void autorizadoAgendar(Usuario usuario) {
 		Cidadao cidadao = (Cidadao) usuarioFactory.get(usuario);
-		if(cidadao.exibeEstado().equals("Habilitado para tomar 1ª dose") && !agendamentoRepository.existsByUsuario(usuario)) {
-			return true;
+		
+		if(!cidadao.exibeEstado().contains("Habilitado para tomar")) {
+			throw new ValidacaoException(
+	             new ErroDeSistema(ErroAgendamento.erroUsuarioNaoHabilitado(), HttpStatus.BAD_REQUEST)
+	        );
 		}
 		
-		if(cidadao.exibeEstado().equals("Habilitado para tomar 2ª dose") && agendamentoRepository.existsOnlyOneByUsuario(usuario)) {
-			return true;
+		if(agendamentoRepository.existsByUsuario(usuario)) {
+			throw new ValidacaoException(
+	             new ErroDeSistema(ErroAgendamento.erroAgendamentoPendente(), HttpStatus.BAD_REQUEST)
+	        );
 		}
-		
-		return false;
 	}
 }

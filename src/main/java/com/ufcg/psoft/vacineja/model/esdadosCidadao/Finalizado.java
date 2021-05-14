@@ -11,7 +11,9 @@ public class Finalizado extends Estado {
 	public void atualiza(Cidadao cidadao) {}
 
 	@Override
-	public void vacina(Cidadao cidadao, int diasEntreDoses, boolean precisaSegundaDose) {}
+	public boolean vacina(Cidadao cidadao, int diasEntreDoses, boolean precisaSegundaDose) {
+		return false;
+	}
 	
 	@Override
 	public String toString() {

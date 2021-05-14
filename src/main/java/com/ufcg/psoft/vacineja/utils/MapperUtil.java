@@ -1,7 +1,6 @@
 package com.ufcg.psoft.vacineja.utils;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component

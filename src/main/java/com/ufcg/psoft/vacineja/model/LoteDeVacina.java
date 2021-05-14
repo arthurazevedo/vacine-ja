@@ -1,6 +1,5 @@
 package com.ufcg.psoft.vacineja.model;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
