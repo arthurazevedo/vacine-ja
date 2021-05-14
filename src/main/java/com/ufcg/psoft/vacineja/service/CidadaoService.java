@@ -253,9 +253,9 @@ public class CidadaoService {
 
         Cidadao cidadao = cidadaoOptional.get();
         
-        if(cidadao.vacina(diasEntreDoses, precisaSegundaDose)) {
+        if(!cidadao.vacina(diasEntreDoses, precisaSegundaDose)) {
         	throw new ValidacaoException(
-                new ErroDeSistema(ErroCidadao.erroCidadaoNaoHabilitado(cpf), HttpStatus.NOT_FOUND)
+                new ErroDeSistema(ErroCidadao.erroCidadaoNaoHabilitado(cpf), HttpStatus.BAD_REQUEST)
             );
         }
         

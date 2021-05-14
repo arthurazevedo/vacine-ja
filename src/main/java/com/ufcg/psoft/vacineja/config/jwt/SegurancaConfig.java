@@ -48,7 +48,7 @@ public class SegurancaConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().authorizeRequests()
                 //Lembrar de liberar as portas aqui
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
-                .antMatchers("/cidadao/**").permitAll()
+                .antMatchers("/**").permitAll()
                 .antMatchers("/agendamento/**").permitAll()
                 .antMatchers("/h2/**").permitAll()
                 .anyRequest().authenticated()

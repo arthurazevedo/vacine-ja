@@ -1,6 +1,7 @@
 package com.ufcg.psoft.vacineja.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
@@ -16,6 +17,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Agendamento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
