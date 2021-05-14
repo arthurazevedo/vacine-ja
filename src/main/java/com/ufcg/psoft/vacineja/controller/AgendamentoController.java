@@ -19,7 +19,7 @@ public class AgendamentoController {
 	@Autowired
 	private AgendamentoService agendamentoService;
 	
-	@RequestMapping(value = "/{email}", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> agendaHorario(@RequestBody AgendamentoDTO agendamentoDTO){
 		agendamentoService.salvaAgendamento(agendamentoDTO);
 		return new ResponseEntity<AgendamentoDTO>(agendamentoDTO, HttpStatus.CREATED);
