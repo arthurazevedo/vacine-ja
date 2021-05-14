@@ -12,8 +12,11 @@ public class TomouPrimeiraDose extends Estado {
 	
 	private LocalDate dataDaVacina;
 	private int diasEntreDoses;
-	
+
+	public TomouPrimeiraDose() {}
+
 	public TomouPrimeiraDose(int diasEntreDoses) {
+		this.nomeDoEstado = "TomouPrimeiraDose";
 		this.dataDaVacina = LocalDate.now();
 		this.diasEntreDoses = diasEntreDoses;
 	}
