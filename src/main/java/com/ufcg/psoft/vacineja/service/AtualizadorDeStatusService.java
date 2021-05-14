@@ -28,6 +28,5 @@ public class AtualizadorDeStatusService {
             cidadao.atualiza();
             cidadaoRepository.save(cidadao);
         }
-        System.out.println("O status dos cidadãos que podem ser vacinados foram atualizados!");
     }
 }
