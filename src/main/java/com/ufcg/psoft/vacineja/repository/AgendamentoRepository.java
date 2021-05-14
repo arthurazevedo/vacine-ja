@@ -15,8 +15,5 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Long>{
 	
 	boolean existsByUsuario(Usuario usuario);
 	
-	@Query("SELECT COUNT(a) = 1 FROM Agendamento a WHERE a.usuario = :usuario")
-	boolean existsOnlyOneByUsuario(@Param("usuario") Usuario usuario);
-
 	void deleteByUsuario(Usuario usuario);
 }
