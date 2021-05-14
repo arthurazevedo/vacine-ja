@@ -27,7 +27,7 @@ public class AgendamentoService {
 	@Autowired
 	private TipoUsuarioFactory usuarioFactory;
 	
-	public void salvaAgendamento(AgendamentoDTO agendamentoDTO, String email) {
+	public void salvaAgendamento(AgendamentoDTO agendamentoDTO) {
 		Authentication autenticacao = SecurityContextHolder.getContext().getAuthentication();
 		
 		Usuario usuario = (Usuario) autenticacao.getPrincipal();
