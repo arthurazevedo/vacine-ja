@@ -10,7 +10,6 @@ import com.ufcg.psoft.vacineja.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,9 +38,9 @@ public class CidadaoController {
 		return new ResponseEntity<>(cidadaoResponseDTO, HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/{cpf}/estado", method = RequestMethod.GET, produces="application/json")
-	public ResponseEntity<?> mostrarEstadoCidadao(@PathVariable String cpf) {
-		String estado = cidadaoService.pegarEstadoCidadao(cpf);
+	@RequestMapping(value = "/estado", method = RequestMethod.GET, produces="application/json")
+	public ResponseEntity<?> mostrarEstadoCidadao() {
+		String estado = cidadaoService.pegarEstadoCidadao();
 		EstadoCidadaoResponseDTO estadoCidadao = new EstadoCidadaoResponseDTO(estado);
 		return new ResponseEntity<EstadoCidadaoResponseDTO>(estadoCidadao, HttpStatus.OK);
 	}
