@@ -8,8 +8,6 @@ public final class ErroVacina {
 
     private static final String FABRICANTE_NULO = "Fabricante da vacina não pode ser nulo";
 
-    private static final String QUANTIDADE_DE_DOSES_INVALIDA = "A vacina deve necessitar de apenas uma ou duas doses.";
-
     private static final String SEM_INTERVALO_ENTRE_DOSES =
             "Vacinas com mais de uma dose devem possuir um intervalo de dias entre as doses.";
 
@@ -23,10 +21,6 @@ public final class ErroVacina {
 
     public static String erroFabricanteNulo() {
         return FABRICANTE_NULO;
-    }
-
-    public static String erroQuantidadeDeDosesInvalida() {
-        return QUANTIDADE_DE_DOSES_INVALIDA;
     }
 
     public static String erroVacinaDeDoseUnica() {
