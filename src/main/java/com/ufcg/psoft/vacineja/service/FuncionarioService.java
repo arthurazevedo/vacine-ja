@@ -3,19 +3,15 @@ package com.ufcg.psoft.vacineja.service;
 import com.ufcg.psoft.vacineja.dtos.FuncionarioCadastroDTO;
 import com.ufcg.psoft.vacineja.model.Cidadao;
 import com.ufcg.psoft.vacineja.model.Funcionario;
-import com.ufcg.psoft.vacineja.model.Usuario;
 import com.ufcg.psoft.vacineja.repository.FuncionarioRepository;
-import com.ufcg.psoft.vacineja.service.factory.TipoUsuarioFactory;
 import com.ufcg.psoft.vacineja.utils.ErroCidadao;
 import com.ufcg.psoft.vacineja.utils.ErroFuncionario;
-import com.ufcg.psoft.vacineja.utils.ErroVacina;
+import com.ufcg.psoft.vacineja.utils.LoginUtil;
 import com.ufcg.psoft.vacineja.utils.MapperUtil;
 import com.ufcg.psoft.vacineja.utils.error.exception.ValidacaoException;
 import com.ufcg.psoft.vacineja.utils.error.model.ErroDeSistema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,14 +27,12 @@ public class FuncionarioService {
     private MapperUtil mapper;
 
     @Autowired
-    private TipoUsuarioFactory tipoUsuarioFactory;
+    private LoginUtil loginUtil;
 
     public void cadastrarFuncionario(FuncionarioCadastroDTO funcionarioDTO) {
-        Authentication autenticacao = SecurityContextHolder.getContext().getAuthentication();
+        Cidadao cidadao = loginUtil.pegarCidadaoLogado();
 
-        Cidadao cidadaoAuthenticated = (Cidadao) tipoUsuarioFactory.get((Usuario) autenticacao.getPrincipal());
-
-        boolean naoExisteCidadao = cidadaoAuthenticated == null;
+        boolean naoExisteCidadao = cidadao == null;
 
         if (naoExisteCidadao) {
             throw new ValidacaoException(
@@ -53,7 +47,7 @@ public class FuncionarioService {
             );
         }
 
-        boolean funcionarioExiste = funcionarioRepository.existsByCidadao(cidadaoAuthenticated);
+        boolean funcionarioExiste = funcionarioRepository.existsByCidadao(cidadao);
 
         if (funcionarioExiste) {
             throw new ValidacaoException(
@@ -64,7 +58,7 @@ public class FuncionarioService {
         Funcionario funcionario = mapper.toEntity(funcionarioDTO, Funcionario.class);
 
         funcionario.setAprovado(false);
-        funcionario.setCidadao(cidadaoAuthenticated);
+        funcionario.setCidadao(cidadao);
 
         funcionarioRepository.save(funcionario);
     }
