@@ -29,7 +29,9 @@ public class TomouPrimeiraDose extends Estado {
 	}
 
 	@Override
-	public void vacina(Cidadao cidadao, int diasEntreDoses, boolean precisaSegundaDose) {}
+	public boolean vacina(Cidadao cidadao, int diasEntreDoses, boolean precisaSegundaDose) {
+		return false;
+	}
 	
 	@Override
 	public String toString() {

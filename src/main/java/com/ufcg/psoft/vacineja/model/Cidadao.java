@@ -77,6 +77,10 @@ public class Cidadao implements TipoUsuario {
 			this.estado.atualiza(this);
 	}
 	
+	public boolean vacina(int diasEntreDoses, boolean precisaSegundaDose) {
+		return this.estado.vacina(this, diasEntreDoses, precisaSegundaDose);
+	}
+	
 	private boolean temComorbidadeValida(Set<String> comorbidadesValidas) {
 		for(String comorbidade: comorbidadesValidas) {
 			if(this.comorbidades.contains(comorbidade))

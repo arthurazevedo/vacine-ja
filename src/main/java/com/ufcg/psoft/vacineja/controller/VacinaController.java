@@ -3,7 +3,6 @@ package com.ufcg.psoft.vacineja.controller;
 import com.ufcg.psoft.vacineja.dtos.VacinaDTO;
 import com.ufcg.psoft.vacineja.model.Vacina;
 import com.ufcg.psoft.vacineja.service.VacinaService;
-import com.ufcg.psoft.vacineja.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

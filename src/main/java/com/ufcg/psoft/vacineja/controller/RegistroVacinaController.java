@@ -1,6 +1,5 @@
 package com.ufcg.psoft.vacineja.controller;
 
-import com.ufcg.psoft.vacineja.dtos.LoteDeVacinaResponseDTO;
 import com.ufcg.psoft.vacineja.dtos.RegistrosRequestDTO;
 import com.ufcg.psoft.vacineja.dtos.RegistrosResponseDTO;
 import com.ufcg.psoft.vacineja.model.RegistroVacina;

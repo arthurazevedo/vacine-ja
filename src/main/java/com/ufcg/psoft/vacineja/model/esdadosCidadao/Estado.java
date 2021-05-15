@@ -19,6 +19,6 @@ public abstract class Estado {
 	
 	public abstract void atualiza(Cidadao cidadao);
 
-	public abstract void vacina(Cidadao cidadao, int diasEntreDoses, boolean precisaSegundaDose);
+	public abstract boolean vacina(Cidadao cidadao, int diasEntreDoses, boolean precisaSegundaDose);
 
 }

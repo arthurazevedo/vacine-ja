@@ -15,8 +15,9 @@ public class HabilitadoSegundaDose extends Estado {
 	public void atualiza(Cidadao cidadao) {}
 
 	@Override
-	public void vacina(Cidadao cidadao, int diasEntreDoses, boolean precisaSegundaDose) {
+	public boolean vacina(Cidadao cidadao, int diasEntreDoses, boolean precisaSegundaDose) {
 		cidadao.mudaEstado(new Finalizado());
+		return true;
 	}
 	
 	@Override

@@ -7,6 +7,7 @@ public class ErroCidadao {
 	private static final String CPF_JA_CADASTRADO = "O CPF %s já está cadastrado no sistema.";
 	private static final String CIDADAO_NAO_EXISTE = "O cidadao com CPF %s não existe.";
     private static final String CIDADAO_INEXISTENTE = "Cidadão não encontrado.";
+    private static final String CIDADAO_NAO_HABILITADO = "O cidadao com CPF %s não está habilitado para vacinação.";
 
     public static String erroEmailJaCadastrado(String email) {
         return format(EMAIL_JA_CADASTRADO, email);
@@ -22,5 +23,9 @@ public class ErroCidadao {
 
     public static String erroCidadaoNaoEcontrado() {
         return CIDADAO_INEXISTENTE;
+    }
+    
+    public static String erroCidadaoNaoHabilitado(String cpf) {
+    	return format(CIDADAO_NAO_HABILITADO, cpf);
     }
 }
