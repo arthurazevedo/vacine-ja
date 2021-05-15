@@ -55,9 +55,12 @@ public class CidadaoService {
     @Value("${hash.forca}")
     private int forcaHash;
 
-    public String pegarEstadoCidadao(String cpf) {
-        Cidadao cidadao = pegarCidadaoPorCpf(cpf);
-        return cidadao.exibeEstado();
+    public String pegarEstadoCidadao() {
+    	Authentication autenticacao = SecurityContextHolder.getContext().getAuthentication();
+    	
+        Cidadao cidadaoAuthenticated = (Cidadao) tipoUsuarioFactory.get((Usuario) autenticacao.getPrincipal());
+        
+        return cidadaoAuthenticated.exibeEstado();
     }
 
     public Cidadao pegarCidadaoPorCpf(String cpf) {
