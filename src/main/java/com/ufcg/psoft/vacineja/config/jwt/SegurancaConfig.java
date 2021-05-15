@@ -1,5 +1,6 @@
 package com.ufcg.psoft.vacineja.config.jwt;
 
+import com.ufcg.psoft.vacineja.model.enums.TipoUsuarioEnum;
 import com.ufcg.psoft.vacineja.repository.UsuarioRepository;
 import com.ufcg.psoft.vacineja.service.UsuarioService;
 import com.ufcg.psoft.vacineja.service.TokenService;
@@ -47,9 +48,21 @@ public class SegurancaConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
                 //Lembrar de liberar as portas aqui
-                .antMatchers(HttpMethod.POST, "/auth").permitAll()
-                .antMatchers(HttpMethod.POST, "/cidadao").permitAll()
                 .antMatchers("/h2/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/auth").permitAll()
+                .antMatchers(HttpMethod.POST,"/cidadao").permitAll()
+                .antMatchers("/cidadao/**")
+                    .hasAnyAuthority(TipoUsuarioEnum.CIDADAO.getValue(), TipoUsuarioEnum.FUNCIONARIO.getValue())
+                .antMatchers(HttpMethod.POST,"/funcionario").hasAuthority(TipoUsuarioEnum.CIDADAO.getValue())
+                .antMatchers("/funcionario/**").hasAuthority(TipoUsuarioEnum.ADMINISTRADOR.getValue())
+                .antMatchers(HttpMethod.GET,"/vacinas/**")
+                    .hasAnyAuthority(TipoUsuarioEnum.ADMINISTRADOR.getValue(), TipoUsuarioEnum.FUNCIONARIO.getValue())
+                .antMatchers("/vacinas/**").hasAuthority(TipoUsuarioEnum.ADMINISTRADOR.getValue())
+                .antMatchers("/lotes/**").hasAuthority(TipoUsuarioEnum.FUNCIONARIO.getValue())
+                .antMatchers("/perfil-vacinacao/**").hasAuthority(TipoUsuarioEnum.FUNCIONARIO.getValue())
+                .antMatchers("/registros").hasAuthority(TipoUsuarioEnum.FUNCIONARIO.getValue())
+                .antMatchers("/agendamento")
+                    .hasAnyAuthority(TipoUsuarioEnum.CIDADAO.getValue(), TipoUsuarioEnum.FUNCIONARIO.getValue())
                 .anyRequest().authenticated()
                 .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
