@@ -59,7 +59,7 @@ public class VacinaService {
         Vacina vacina = optionalVacina.get();
 
         if(!vacinaDTO.getFabricante().isBlank()) {
-            vacina.setFabricante(vacinaDTO.getFabricante());
+            vacina.setFabricante(ConverterKeysUnicas.convert(vacinaDTO.getFabricante()));
         }
 
         if(vacinaDTO.getDosesRequeridas() <= 2 || vacinaDTO.getDosesRequeridas() >= 1) {
