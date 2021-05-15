@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/cidadao")
 public class CidadaoController {
@@ -27,7 +29,7 @@ public class CidadaoController {
 	private MapperUtil mapperUtil;
 	
 	@RequestMapping(method = RequestMethod.POST, produces="application/json")
-	public ResponseEntity<?> cadastraCidadao(@RequestBody CidadaoRequestDTO cidadaoRequestDTO){
+	public ResponseEntity<?> cadastraCidadao(@RequestBody @Valid CidadaoRequestDTO cidadaoRequestDTO){
 
 		Cidadao cidadao = cidadaoService.salvarCidadao(cidadaoRequestDTO);
 
