@@ -4,15 +4,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
 public class LoteDeVacinaCreateDTO {
-    @NonNull
+    @NotNull(message = "Informe o id da vacina.")
     private Long vacinaId;
-    @NonNull
+
+    @NotNull(message = "Informe quantas doses são necessárias para completar a vacinação.")
     private Long numDoses;
-    @NonNull
+
+    @NotNull(message = "Informe a data de validade da vacina.")
     private LocalDate dataDeValidade;
 }
