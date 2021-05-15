@@ -1,4 +1,4 @@
-package com.ufcg.psoft.vacineja.service;
+package com.ufcg.psoft.vacineja.service.notificacao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -6,7 +6,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EnviarEmailService {
+public class EnviarEmailService implements EnviarEmail {
 
     @Autowired
     private JavaMailSender enviarEmail;
