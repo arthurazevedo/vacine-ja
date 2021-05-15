@@ -4,6 +4,7 @@ import com.ufcg.psoft.vacineja.dtos.FuncionarioCadastroDTO;
 import com.ufcg.psoft.vacineja.model.Cidadao;
 import com.ufcg.psoft.vacineja.model.Funcionario;
 import com.ufcg.psoft.vacineja.model.Usuario;
+import com.ufcg.psoft.vacineja.model.enums.TipoUsuarioEnum;
 import com.ufcg.psoft.vacineja.repository.FuncionarioRepository;
 import com.ufcg.psoft.vacineja.service.factory.TipoUsuarioFactory;
 import com.ufcg.psoft.vacineja.utils.ErroCidadao;
@@ -84,6 +85,7 @@ public class FuncionarioService {
 
         Funcionario funcionario = funcionarioOptional.get();
         funcionario.setAprovado(true);
+        funcionario.getCidadao().getUsuario().setPerfil(TipoUsuarioEnum.FUNCIONARIO.getValue());
         funcionarioRepository.save(funcionario);
     }
 }
