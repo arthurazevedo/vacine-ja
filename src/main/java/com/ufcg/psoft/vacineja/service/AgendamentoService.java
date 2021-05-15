@@ -13,6 +13,7 @@ import com.ufcg.psoft.vacineja.model.Agendamento;
 import com.ufcg.psoft.vacineja.model.Cidadao;
 import com.ufcg.psoft.vacineja.model.Usuario;
 import com.ufcg.psoft.vacineja.repository.AgendamentoRepository;
+import com.ufcg.psoft.vacineja.repository.LoteRepository;
 import com.ufcg.psoft.vacineja.service.factory.TipoUsuarioFactory;
 import com.ufcg.psoft.vacineja.utils.ErroAgendamento;
 import com.ufcg.psoft.vacineja.utils.error.exception.ValidacaoException;
@@ -23,6 +24,9 @@ public class AgendamentoService {
 	
 	@Autowired
 	private AgendamentoRepository agendamentoRepository;
+	
+	@Autowired
+	private LoteRepository loteRepository;
 	
 	@Autowired
 	private TipoUsuarioFactory usuarioFactory;
@@ -67,6 +71,12 @@ public class AgendamentoService {
 			throw new ValidacaoException(
 	             new ErroDeSistema(ErroAgendamento.erroAgendamentoPendente(), HttpStatus.BAD_REQUEST)
 	        );
+		}
+		
+		if(!(agendamentoRepository.count() < loteRepository.sumNumDoses())) {
+			throw new ValidacaoException(
+		         new ErroDeSistema(ErroAgendamento.erroNaoHaDosesDisponiveis(), HttpStatus.BAD_REQUEST)
+		    );
 		}
 	}
 }
