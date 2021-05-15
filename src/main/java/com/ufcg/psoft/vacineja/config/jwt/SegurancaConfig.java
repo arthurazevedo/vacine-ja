@@ -61,6 +61,8 @@ public class SegurancaConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/lotes/**").hasAuthority(TipoUsuarioEnum.FUNCIONARIO.getValue())
                 .antMatchers("/perfil-vacinacao/**").hasAuthority(TipoUsuarioEnum.FUNCIONARIO.getValue())
                 .antMatchers("/registros").hasAuthority(TipoUsuarioEnum.FUNCIONARIO.getValue())
+                .antMatchers("/agendamento")
+                    .hasAnyAuthority(TipoUsuarioEnum.CIDADAO.getValue(), TipoUsuarioEnum.FUNCIONARIO.getValue())
                 .anyRequest().authenticated()
                 .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
