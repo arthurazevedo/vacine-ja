@@ -45,6 +45,9 @@ public class CidadaoController {
 	
 	@RequestMapping(method = RequestMethod.PUT, produces="application/json")
 	public ResponseEntity<?> mudaDadosCidadao(@RequestBody CidadaoUpdateDTO cidadaoUpdateDTO) {
-		return new ResponseEntity<Cidadao>(cidadaoService.atualizaCidadao(cidadaoUpdateDTO), HttpStatus.OK);
+		Cidadao cidadaoAtualizado = cidadaoService.atualizaCidadao(cidadaoUpdateDTO);
+		CidadaoResponseDTO cidadaoResponseDTO = mapperUtil.toDTO(cidadaoAtualizado, CidadaoResponseDTO.class);
+		cidadaoResponseDTO.setEmail(cidadaoAtualizado.getUsuario().getEmail());
+		return new ResponseEntity<CidadaoResponseDTO>(cidadaoResponseDTO, HttpStatus.OK);
 	}
 }
