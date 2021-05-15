@@ -7,6 +7,7 @@ import com.ufcg.psoft.vacineja.model.LoteDeVacina;
 import com.ufcg.psoft.vacineja.model.Vacina;
 import com.ufcg.psoft.vacineja.repository.LoteRepository;
 import com.ufcg.psoft.vacineja.repository.VacinaRepository;
+import com.ufcg.psoft.vacineja.utils.ConverterKeysUnicas;
 import com.ufcg.psoft.vacineja.utils.ErroLote;
 import com.ufcg.psoft.vacineja.utils.ErroVacina;
 import com.ufcg.psoft.vacineja.utils.MapperUtil;
@@ -35,10 +36,13 @@ public class LoteDeVacinaService {
     private MapperUtil mapper;
 
     public LoteDeVacinaResponseDTO cadastrarLote(LoteDeVacinaCreateDTO loteDeVacinaCreateDTO) {
-        Optional<Vacina> optionalVacina = vacinaRepository.findById(loteDeVacinaCreateDTO.getVacinaId());
+        Optional<Vacina> optionalVacina = vacinaRepository
+                .findByFabricante(ConverterKeysUnicas.convert(loteDeVacinaCreateDTO.getFabricanteDaVacina()));
         if(optionalVacina.isEmpty()) {
             throw new ValidacaoException(
-                    new ErroDeSistema(ErroVacina.erroVacinaNaoEncontrada(loteDeVacinaCreateDTO.getVacinaId()), HttpStatus.NOT_FOUND)
+                new ErroDeSistema(
+                    ErroVacina.erroVacinaPorFabricanteNaoEcontrada(loteDeVacinaCreateDTO.getFabricanteDaVacina()),
+                    HttpStatus.NOT_FOUND)
             );
         }
 
@@ -63,10 +67,11 @@ public class LoteDeVacinaService {
         return mapper.toDTO(optionalLote.get(), LoteDeVacinaResponseDTO.class);
     }
 
-    public List<LoteDeVacinaResponseDTO> listarLotesPorVacina(Long vacinaId) {
-        return loteRepository.findAllLotesByVacinaId(vacinaId).stream().map(loteDeVacina ->
-                mapper.toDTO(loteDeVacina, LoteDeVacinaResponseDTO.class)
-        ).collect(Collectors.toList());
+    public List<LoteDeVacinaResponseDTO> listarLotesPorVacina(String fabricante) {
+        return loteRepository.findAllLotesByVacinaFabricante(ConverterKeysUnicas.convert(fabricante))
+                .stream()
+                .map(loteDeVacina -> mapper.toDTO(loteDeVacina, LoteDeVacinaResponseDTO.class))
+                .collect(Collectors.toList());
     }
 
     public LoteDeVacina editarLote(Long id, LoteDeVacinaUpdateDTO loteDeVacinaUpdateDTO) {
@@ -88,10 +93,13 @@ public class LoteDeVacinaService {
             lote.setNumDoses(loteDeVacinaUpdateDTO.getNumDoses());
         }
 
-        Optional<Vacina> optionalVacina = vacinaRepository.findById(loteDeVacinaUpdateDTO.getVacinaId());
+        Optional<Vacina> optionalVacina = vacinaRepository
+                .findByFabricante(ConverterKeysUnicas.convert(loteDeVacinaUpdateDTO.getFabricanteDaVacina()));
         if(optionalVacina.isEmpty()) {
             throw new ValidacaoException(
-                    new ErroDeSistema(ErroVacina.erroVacinaNaoEncontrada(loteDeVacinaUpdateDTO.getVacinaId()), HttpStatus.NOT_FOUND)
+                new ErroDeSistema(
+                    ErroVacina.erroVacinaPorFabricanteNaoEcontrada(loteDeVacinaUpdateDTO.getFabricanteDaVacina()),
+                    HttpStatus.NOT_FOUND)
             );
         } else {
             lote.setVacina(optionalVacina.get());

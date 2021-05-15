@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface LoteRepository extends JpaRepository<LoteDeVacina, Long> {
-    List<LoteDeVacina> findAllLotesByVacinaId(Long vacinaId);
+    List<LoteDeVacina> findAllLotesByVacinaFabricante(String fabricnate);
     
     @Query("SELECT SUM(l.numDoses) FROM LoteDeVacina l")
     long sumNumDoses();

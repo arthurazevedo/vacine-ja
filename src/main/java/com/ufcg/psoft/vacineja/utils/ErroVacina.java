@@ -6,6 +6,8 @@ public final class ErroVacina {
 
     private static final String VACINA_NAO_ENCONTRADA = "Vacina com id: %s não foi encontrada.";
 
+    private static final String VACINA_POR_FABRICANTE_NAO_ENCONTRADA = "Vacina com fabricante: %s não foi encontrada.";
+
     private static final String FABRICANTE_NULO = "Fabricante da vacina não pode ser nulo";
 
     private static final String QUANTIDADE_DE_DOSES_INVALIDA = "A vacina deve necessitar de apenas uma ou duas doses.";
@@ -19,6 +21,10 @@ public final class ErroVacina {
 
     public static String erroVacinaNaoEncontrada(Long id) {
         return format(VACINA_NAO_ENCONTRADA, id);
+    }
+
+    public static String erroVacinaPorFabricanteNaoEcontrada(String fabricante) {
+        return format(VACINA_POR_FABRICANTE_NAO_ENCONTRADA, fabricante);
     }
 
     public static String erroFabricanteNulo() {
