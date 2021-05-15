@@ -62,11 +62,9 @@ public class VacinaService {
             vacina.setFabricante(ConverterKeysUnicas.convert(vacinaDTO.getFabricante()));
         }
 
-        if(vacinaDTO.getDosesRequeridas() <= 2 || vacinaDTO.getDosesRequeridas() >= 1) {
-            vacina.setDosesRequeridas(vacinaDTO.getDosesRequeridas());
-        }
+        vacina.setPrecisaSegundaDose(vacinaDTO.isPrecisaSegundaDose());
 
-        if(vacinaDTO.getIntervaloEntreDoses() > 0 && vacinaDTO.getDosesRequeridas() == 2) {
+        if(vacinaDTO.getIntervaloEntreDoses() > 0 && vacinaDTO.isPrecisaSegundaDose()) {
             vacina.setIntervaloEntreDoses(vacinaDTO.getIntervaloEntreDoses());
         }
 
@@ -98,17 +96,11 @@ public class VacinaService {
             );
         }
 
-        if(vacinaDTO.getDosesRequeridas() > 2 || vacinaDTO.getDosesRequeridas() < 0) {
-            throw new ValidacaoException(
-                    new ErroDeSistema(ErroVacina.erroQuantidadeDeDosesInvalida())
-            );
-        }
-
-        if(vacinaDTO.getDosesRequeridas() > 1 && vacinaDTO.getIntervaloEntreDoses() == 0) {
+        if(vacinaDTO.isPrecisaSegundaDose() && vacinaDTO.getIntervaloEntreDoses() <= 0) {
             throw new ValidacaoException(
                     new ErroDeSistema(ErroVacina.erroVacinaSemIntervaloEntreDoses())
             );
-        } else if(vacinaDTO.getDosesRequeridas() == 1 && vacinaDTO.getIntervaloEntreDoses() > 0) {
+        } else if(!vacinaDTO.isPrecisaSegundaDose() && vacinaDTO.getIntervaloEntreDoses() > 0) {
             throw new ValidacaoException(
                     new ErroDeSistema(ErroVacina.erroVacinaDeDoseUnica())
             );
