@@ -10,7 +10,7 @@ import com.ufcg.psoft.vacineja.model.Agendamento;
 import com.ufcg.psoft.vacineja.model.Usuario;
 
 public interface AgendamentoRepository extends JpaRepository<Agendamento, Long>{
-	@Query("SELECT CASE WHEN count(a) > 0 THEN true ELSE false END FROM Agendamento a WHERE ABS(minute(a.horario) - minute(:horario)) < 10")
+	@Query(value = "SELECT CASE WHEN count(*) > 0 THEN true ELSE false END FROM Agendamento a WHERE ABS(DATEDIFF(MINUTE, a.horario, :horario)) < 10", nativeQuery = true)
 	boolean existsByLessThanTenMinInterval(@Param("horario") Date horario);
 	
 	boolean existsByUsuario(Usuario usuario);
