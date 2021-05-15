@@ -55,9 +55,12 @@ public class CidadaoService {
     @Value("${hash.forca}")
     private int forcaHash;
 
-    public String pegarEstadoCidadao(String cpf) {
-        Cidadao cidadao = pegarCidadaoPorCpf(cpf);
-        return cidadao.exibeEstado();
+    public String pegarEstadoCidadao() {
+    	Authentication autenticacao = SecurityContextHolder.getContext().getAuthentication();
+    	
+        Cidadao cidadaoAuthenticated = (Cidadao) tipoUsuarioFactory.get((Usuario) autenticacao.getPrincipal());
+        
+        return cidadaoAuthenticated.exibeEstado();
     }
 
     public Cidadao pegarCidadaoPorCpf(String cpf) {
@@ -117,7 +120,6 @@ public class CidadaoService {
 
     public Cidadao salvarCidadao(CidadaoRequestDTO cidadaoRequestDTO) {
         validaCadastroPorEmailECpf(cidadaoRequestDTO);
-        validaCidadaoRequestDTO(cidadaoRequestDTO);
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(forcaHash);
         cidadaoRequestDTO.setSenha(encoder.encode(cidadaoRequestDTO.getSenha()));
@@ -172,82 +174,17 @@ public class CidadaoService {
     }
 
     private void validaCadastroPorEmailECpf(CidadaoRequestDTO cidadaoRequestDTO) {
-        if(nonNull(cidadaoRequestDTO.getEmail()) && usuarioService.contemUsuario(cidadaoRequestDTO.getEmail())) {
+        if(usuarioService.contemUsuario(cidadaoRequestDTO.getEmail())) {
             throw new ValidacaoException(new ErroDeSistema(
                     ErroCidadao.erroEmailJaCadastrado(cidadaoRequestDTO.getEmail()), HttpStatus.BAD_REQUEST)
             );
         }
 
-        if(nonNull(cidadaoRequestDTO.getCpf()) && contemCidadao(cidadaoRequestDTO.getCpf())) {
+        if(contemCidadao(cidadaoRequestDTO.getCpf())) {
             throw new ValidacaoException(new ErroDeSistema(
                     ErroCidadao.erroCpfJaCadastrado(cidadaoRequestDTO.getCpf()), HttpStatus.BAD_REQUEST)
             );
         }
-    }
-
-    private void validaCidadaoRequestDTO(CidadaoRequestDTO cidadaoRequestDTO) {
-
-        if(validaParamDTO(cidadaoRequestDTO.getCpf()) || cidadaoRequestDTO.getCpf().length() != 11) {
-            throw new ValidacaoException(new ErroDeSistema(
-                    "CPF inválido. O CPF deve conter 11 dígitos.", HttpStatus.BAD_REQUEST
-            ));
-        }
-
-        if(validaParamDTO(cidadaoRequestDTO.getEndereco())) {
-            throw new ValidacaoException(new ErroDeSistema(
-                    "Endereço inválido.", HttpStatus.BAD_REQUEST
-            ));
-        }
-
-        if(validaParamDTO(cidadaoRequestDTO.getProfissao())) {
-            throw new ValidacaoException(new ErroDeSistema(
-                    "Profissão inválida.", HttpStatus.BAD_REQUEST
-            ));
-        }
-
-        if(validaParamDTO(cidadaoRequestDTO.getNome())) {
-            throw new ValidacaoException(new ErroDeSistema(
-                    "Nome inválido.", HttpStatus.BAD_REQUEST
-            ));
-        }
-
-        if(validaParamDTO(cidadaoRequestDTO.getEmail()) || !cidadaoRequestDTO.getEmail().contains("@")) {
-            throw new ValidacaoException(new ErroDeSistema(
-                    "E-mail inválido.", HttpStatus.BAD_REQUEST
-            ));
-        }
-
-        if(validaParamDTO(cidadaoRequestDTO.getNascimento())) {
-            throw new ValidacaoException(new ErroDeSistema(
-                    "Data de Nascimento Inválida.", HttpStatus.BAD_REQUEST
-            ));
-        }
-
-        if(validaParamDTO(cidadaoRequestDTO.getSus())) {
-            throw new ValidacaoException(new ErroDeSistema(
-                    "Número SUS inválido.", HttpStatus.BAD_REQUEST
-            ));
-        }
-
-        if(validaParamDTO(cidadaoRequestDTO.getTelefone())) {
-            throw new ValidacaoException(new ErroDeSistema(
-                    "Número de Telefone Inválido.", HttpStatus.BAD_REQUEST
-            ));
-        }
-
-        if(validaParamDTO(cidadaoRequestDTO.getSenha()) || cidadaoRequestDTO.getSenha().length() <= 4) {
-            throw new ValidacaoException(new ErroDeSistema(
-                    "Informe uma senha válida com no mínimo 5 caracteres.", HttpStatus.BAD_REQUEST
-            ));
-        }
-
-        if(isNull(cidadaoRequestDTO.getComorbidades())) {
-            cidadaoRequestDTO.setComorbidades(Set.of());
-        }
-    }
-
-    private <T> boolean validaParamDTO(T param) {
-        return isNull(param) || param.toString().isBlank();
     }
     
     public Cidadao vacinaCidadao(String cpf, int diasEntreDoses, boolean precisaSegundaDose) {
