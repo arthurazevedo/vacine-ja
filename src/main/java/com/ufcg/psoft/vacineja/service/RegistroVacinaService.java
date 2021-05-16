@@ -21,10 +21,12 @@ public class RegistroVacinaService {
     private LoteDeVacinaService loteDeVacinaService;
 
     public RegistroVacina cadastrar(RegistrosRequestDTO registro) {
-
-        LoteDeVacina lote = loteDeVacinaService.removeUnidadesDoLote(registro.getLote());
+    	
+    	LoteDeVacina lote = loteDeVacinaService.getLoteById(registro.getLote());
         
         Cidadao cidadao = cidadaoService.vacinaCidadao(registro.getCpf(), lote.getVacina().getIntervaloEntreDoses(), lote.getVacina().isPrecisaSegundaDose());
+        
+        loteDeVacinaService.removeUnidadesDoLote(registro.getLote());
 
         RegistroVacina registroData = new RegistroVacina(cidadao, registro.getData(), lote, lote.getVacina(),
                 registro.getNumeroDose());

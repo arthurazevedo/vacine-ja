@@ -54,16 +54,8 @@ public class LoteDeVacinaService {
          return mapper.toDTO(lote, LoteDeVacinaResponseDTO.class);
     }
 
-    public LoteDeVacinaResponseDTO buscarPorId(Long id) {
-        Optional<LoteDeVacina> optionalLote = loteRepository.findById(id);
-
-        if(optionalLote.isEmpty()) {
-            throw new ValidacaoException(
-                    new ErroDeSistema(ErroLote.erroLoteNaoEcontrado(id), HttpStatus.NOT_FOUND)
-            );
-        }
-
-        return mapper.toDTO(optionalLote.get(), LoteDeVacinaResponseDTO.class);
+    public LoteDeVacinaResponseDTO geraResponseDTOPorId(Long id) {
+        return mapper.toDTO(getLoteById(id), LoteDeVacinaResponseDTO.class);
     }
 
     public List<LoteDeVacinaResponseDTO> listarLotesPorVacina(String fabricante) {
@@ -108,26 +100,11 @@ public class LoteDeVacinaService {
     }
 
     public void removerLote(Long id) {
-        Optional<LoteDeVacina> optionalLote = loteRepository.findById(id);
-        if(optionalLote.isEmpty()) {
-            throw new ValidacaoException(
-                   new ErroDeSistema(ErroLote.erroLoteNaoEcontrado(id), HttpStatus.NOT_FOUND)
-            );
-        }
-
-        loteRepository.delete(optionalLote.get());
+        loteRepository.delete(getLoteById(id));
     }
     
-    public LoteDeVacina removeUnidadesDoLote(Long id) {
-    	Optional<LoteDeVacina> loteOptional = loteRepository.findById(id);
-
-        if (loteOptional.isEmpty()) {
-            throw new ValidacaoException(
-                    new ErroDeSistema(ErroLote.erroLoteNaoEcontrado(id), HttpStatus.NOT_FOUND)
-            );
-        }
-
-        LoteDeVacina lote = loteOptional.get();
+    public void removeUnidadesDoLote(Long id) {
+        LoteDeVacina lote = getLoteById(id);
 
         if (lote.getNumDoses() <= 0) {
             throw new ValidacaoException(
@@ -138,7 +115,17 @@ public class LoteDeVacinaService {
         lote.setNumDoses(lote.getNumDoses() - 1);
 
         loteRepository.save(lote);
+    }
+    
+    public LoteDeVacina getLoteById(Long id) {
+    	Optional<LoteDeVacina> loteOptional = loteRepository.findById(id);
+
+        if (loteOptional.isEmpty()) {
+            throw new ValidacaoException(
+                    new ErroDeSistema(ErroLote.erroLoteNaoEcontrado(id), HttpStatus.NOT_FOUND)
+            );
+        }
         
-        return lote;
+        return loteOptional.get();
     }
 }
