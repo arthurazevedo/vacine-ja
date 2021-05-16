@@ -9,8 +9,8 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 public class LoteDeVacinaUpdateDTO {
-    @NotNull(message = "Informe o id da vacina.")
-    private Long vacinaId;
+    @NotNull(message = "Informe o fabricante da vacina")
+    private String fabricanteDaVacina;
 
     private Long numDoses;
 
