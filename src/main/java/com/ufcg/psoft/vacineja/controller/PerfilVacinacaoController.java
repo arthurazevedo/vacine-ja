@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Set;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/perfil-vacinacao")
@@ -38,19 +41,19 @@ public class PerfilVacinacaoController {
 
     @PutMapping(value = "/profissoes", consumes = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void adicionarProfissao(@RequestBody String novaProfissao) {
+    public void adicionarProfissao(@RequestBody @NotBlank(message = "Informe uma profissão") String novaProfissao) {
         perfilVacinacaoService.adicionarProfissao(novaProfissao);
     }
 
     @PutMapping(value = "/comorbidades", consumes = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void adicionarComorbidade(@RequestBody String novaComorbidade) {
+    public void adicionarComorbidade(@RequestBody @NotBlank(message = "Informe uma comorbidade") String novaComorbidade) {
         perfilVacinacaoService.adicionarComorbidade(novaComorbidade);
     }
 
     @PutMapping(value = "/idade", consumes = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void alterarIdadeMinima(@RequestBody int novaIdade) {
+    public void alterarIdadeMinima(@RequestBody @Min(value = 1, message = "A idade tem que ser maior que 0") int novaIdade) {
         perfilVacinacaoService.alterarIdadeMinima(novaIdade);
     }
 }

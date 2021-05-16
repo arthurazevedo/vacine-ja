@@ -25,7 +25,6 @@ public class VacinaService {
     private MapperUtil mapper;
 
     public Vacina cadastrarVacina(VacinaDTO vacinaDTO) {
-
         validarDtoCadastroDeVacina(vacinaDTO);
         vacinaDTO.setFabricante(StringUtil.converterKeysUnicas(vacinaDTO.getFabricante()));
         final var vacina = mapper.toEntity(vacinaDTO, Vacina.class);
@@ -63,9 +62,11 @@ public class VacinaService {
             vacina.setFabricante(StringUtil.converterKeysUnicas(vacinaDTO.getFabricante()));
         }
 
-        vacina.setPrecisaSegundaDose(vacinaDTO.isPrecisaSegundaDose());
+        if(vacinaDTO.getFabricante() != null) {
+        	vacina.setPrecisaSegundaDose(vacinaDTO.getPrecisaSegundaDose());
+        }
 
-        if(vacinaDTO.getIntervaloEntreDoses() > 0 && vacinaDTO.isPrecisaSegundaDose()) {
+        if(vacinaDTO.getIntervaloEntreDoses() != null && vacina.isPrecisaSegundaDose()) {
             vacina.setIntervaloEntreDoses(vacinaDTO.getIntervaloEntreDoses());
         }
 
@@ -92,11 +93,7 @@ public class VacinaService {
             );
         }
 
-        if(vacinaDTO.getPrecisaSegundaDose() && vacinaDTO.getIntervaloEntreDoses() <= 0) {
-            throw new ValidacaoException(
-                    new ErroDeSistema(ErroVacina.erroVacinaSemIntervaloEntreDoses())
-            );
-        } else if(!vacinaDTO.getPrecisaSegundaDose() && vacinaDTO.getIntervaloEntreDoses() > 0) {
+        if(!vacinaDTO.getPrecisaSegundaDose() && vacinaDTO.getIntervaloEntreDoses() > 0) {
             throw new ValidacaoException(
                     new ErroDeSistema(ErroVacina.erroVacinaDeDoseUnica())
             );

@@ -33,5 +33,4 @@ public class RegistroVacinaService {
 
         return registroData;
     }
-
 }

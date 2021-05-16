@@ -44,7 +44,7 @@ public class AgendamentoService {
 	}
 	
 	private void horarioEstaVago(Date horario) {
-		if(agendamentoRepository.existsByLessThanTenMinInterval(horario) || horario.before(new Date())) {
+		if(agendamentoRepository.existsByLessThanTenMinInterval(horario)) {
 			throw new ValidacaoException(
 		         new ErroDeSistema(ErroAgendamento.erroHorarioIndisponivel(horario), HttpStatus.BAD_REQUEST)
 		    );

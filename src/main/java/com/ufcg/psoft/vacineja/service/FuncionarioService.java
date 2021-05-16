@@ -42,13 +42,6 @@ public class FuncionarioService {
             );
         }
 
-        if (funcionarioDTO.getCargo() == null || funcionarioDTO.getLocalTrabalho() == null
-                || funcionarioDTO.getCargo().equals("") || funcionarioDTO.getLocalTrabalho().equals("")) {
-            throw new ValidacaoException(
-                    new ErroDeSistema("Informações inválidas.")
-            );
-        }
-
         boolean funcionarioExiste = funcionarioRepository.existsByCidadao(cidadao);
 
         if (funcionarioExiste) {
