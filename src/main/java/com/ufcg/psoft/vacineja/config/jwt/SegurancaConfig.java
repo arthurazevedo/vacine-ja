@@ -48,7 +48,7 @@ public class SegurancaConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
                 //Lembrar de liberar as portas aqui
-                .antMatchers("/h2/**").permitAll()
+                .antMatchers("/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
                 .antMatchers(HttpMethod.POST,"/cidadao").permitAll()
                 .antMatchers("/cidadao/**")
