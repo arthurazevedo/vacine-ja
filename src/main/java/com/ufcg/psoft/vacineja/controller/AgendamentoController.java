@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ufcg.psoft.vacineja.dtos.AgendamentoDTO;
 import com.ufcg.psoft.vacineja.service.AgendamentoService;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/agendamento")
 public class AgendamentoController {
@@ -19,7 +21,7 @@ public class AgendamentoController {
 	private AgendamentoService agendamentoService;
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<?> agendaHorario(@RequestBody AgendamentoDTO agendamentoDTO){
+	public ResponseEntity<?> agendaHorario(@RequestBody @Valid AgendamentoDTO agendamentoDTO){
 		agendamentoService.salvaAgendamento(agendamentoDTO);
 		return new ResponseEntity<AgendamentoDTO>(agendamentoDTO, HttpStatus.CREATED);
 	}

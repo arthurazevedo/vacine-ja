@@ -3,6 +3,7 @@ package com.ufcg.psoft.vacineja.dtos;
 import java.time.LocalDate;
 import java.util.Set;
 
+import com.ufcg.psoft.vacineja.utils.anotacoes.IsValidCpf;
 import com.ufcg.psoft.vacineja.utils.anotacoes.IsValidEmail;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,9 +33,7 @@ public class CidadaoRequestDTO {
 	@NotNull(message = "Informe seu nome.")
 	private String nome;
 
-	@NotBlank(message = "Informe o cpf do cidadão.")
-	@Size(min = 11, max = 14, message = "Informe um cpf válido.")
-	@NotNull(message = "Informe o cpf.")
+	@IsValidCpf
 	private String cpf;
 
 	@NotBlank(message = "Informe o endereço do cidadão.")
