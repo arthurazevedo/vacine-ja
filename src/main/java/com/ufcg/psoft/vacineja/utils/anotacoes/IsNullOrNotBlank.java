@@ -12,7 +12,7 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Pattern(regexp = "(.|\\s)*\\S(.|\\s)*")
+@Pattern(regexp = "(.|\\s)*\\S(.|\\s)*", message = "Informe um valor que não esteja em branco")
 @Target( { METHOD, FIELD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})

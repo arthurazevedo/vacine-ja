@@ -12,7 +12,7 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Pattern(regexp = "^(\\d{11})|(\\d{3}[.]\\d{3}[.]\\d{3}[-]\\d{2})$")
+@Pattern(regexp = "^(\\d{11})|(\\d{3}[.]\\d{3}[.]\\d{3}[-]\\d{2})$", message = "Por favor informe um cpf valido.")
 @Target( { METHOD, FIELD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})

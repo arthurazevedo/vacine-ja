@@ -12,7 +12,7 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Pattern(regexp = "^((\\(\\d{2}\\))|\\d{2})?\\d{4,5}[-]?\\d{4}$")
+@Pattern(regexp = "^((\\(\\d{2}\\))|\\d{2})?\\d{4,5}[-]?\\d{4}$", message = "Por favor informe um número de telefone válido")
 @Target( { METHOD, FIELD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
