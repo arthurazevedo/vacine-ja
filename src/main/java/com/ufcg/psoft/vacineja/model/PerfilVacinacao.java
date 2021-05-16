@@ -1,6 +1,6 @@
 package com.ufcg.psoft.vacineja.model;
 
-import com.ufcg.psoft.vacineja.utils.ConverterKeysUnicas;
+import com.ufcg.psoft.vacineja.utils.StringUtil;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,11 +30,11 @@ public class PerfilVacinacao {
     private int idade;
 
     public void adicionarComorbidade(String comorbidade) {
-        this.comorbidades.add(ConverterKeysUnicas.convert(comorbidade));
+        this.comorbidades.add(StringUtil.converterKeysUnicas(comorbidade));
     }
 
     public void adicionarProfissao(String profissao) {
-        this.profissoes.add(ConverterKeysUnicas.convert(profissao));
+        this.profissoes.add(StringUtil.converterKeysUnicas(profissao));
     }
 
 }

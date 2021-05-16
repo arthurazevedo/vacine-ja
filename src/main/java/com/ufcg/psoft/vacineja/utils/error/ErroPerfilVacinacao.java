@@ -1,4 +1,4 @@
-package com.ufcg.psoft.vacineja.utils;
+package com.ufcg.psoft.vacineja.utils.error;
 
 public class ErroPerfilVacinacao {
 

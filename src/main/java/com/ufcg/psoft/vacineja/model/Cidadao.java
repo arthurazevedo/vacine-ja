@@ -2,7 +2,7 @@ package com.ufcg.psoft.vacineja.model;
 
 import com.ufcg.psoft.vacineja.model.esdadosCidadao.Estado;
 import com.ufcg.psoft.vacineja.model.esdadosCidadao.NaoHabilitado;
-import com.ufcg.psoft.vacineja.utils.ConverterKeysUnicas;
+import com.ufcg.psoft.vacineja.utils.StringUtil;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -58,10 +58,10 @@ public class Cidadao implements TipoUsuario {
 			String profissao, Set<String> comorbidades, LocalDate nascimento) {
 		this.nome = nome;
 		this.endereco = endereco;
-		this.cpf = cpf;
+		this.cpf = StringUtil.paraStringDeNumeros(cpf);
 		this.sus = sus;
-		this.telefone = telefone;
-		this.profissao = ConverterKeysUnicas.convert(profissao);
+		this.telefone = StringUtil.paraStringDeNumeros(telefone);
+		this.profissao = StringUtil.converterKeysUnicas(profissao);
 		this.comorbidades = comorbidades;
 		this.nascimento = nascimento;
 	}
@@ -102,13 +102,21 @@ public class Cidadao implements TipoUsuario {
 	}
 
 	public void setProfissao(String profissao) {
-		this.profissao = ConverterKeysUnicas.convert(profissao);
+		this.profissao = StringUtil.converterKeysUnicas(profissao);
 	}
 
 	public void setComorbidades(Set<String> comorbidades) {
 		this.comorbidades = comorbidades
 				.stream()
-				.map(ConverterKeysUnicas::convert)
+				.map(StringUtil::converterKeysUnicas)
 				.collect(Collectors.toSet());
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = StringUtil.paraStringDeNumeros(cpf);
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = StringUtil.paraStringDeNumeros(telefone);
 	}
 }
