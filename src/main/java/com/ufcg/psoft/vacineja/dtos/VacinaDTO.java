@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class VacinaDTO {
     private String fabricante;
-    private int dosesRequeridas;
+    private boolean precisaSegundaDose;
     private int intervaloEntreDoses;
 }
