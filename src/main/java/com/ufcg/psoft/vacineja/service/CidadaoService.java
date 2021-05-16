@@ -11,6 +11,8 @@ import com.ufcg.psoft.vacineja.repository.PerfilVacinacaoRepository;
 import com.ufcg.psoft.vacineja.utils.StringUtil;
 import com.ufcg.psoft.vacineja.utils.error.ErroCidadao;
 import com.ufcg.psoft.vacineja.utils.error.ErroPerfilVacinacao;
+import com.ufcg.psoft.vacineja.service.factory.TipoUsuarioFactory;
+import com.ufcg.psoft.vacineja.service.notificacao.Notificador;
 import com.ufcg.psoft.vacineja.utils.LoginUtil;
 import com.ufcg.psoft.vacineja.utils.MapperUtil;
 import com.ufcg.psoft.vacineja.utils.error.exception.ValidacaoException;
@@ -41,6 +43,9 @@ public class CidadaoService {
 
     @Autowired
     private MapperUtil mapperUtil;
+
+    @Autowired
+    private Notificador notificador;
 
     @Autowired
     private LoginUtil loginUtil;
@@ -104,7 +109,7 @@ public class CidadaoService {
 
         Cidadao cidadao = mapperUtil.toEntity(cidadaoRequestDTO, Cidadao.class);
         cidadao.setUsuario(usuario);
-        cidadao.habilita(getPerfilVacinacao());
+        cidadao.habilita(getPerfilVacinacao(), notificador);
         cidadaoRepository.save(cidadao);
 
         return cidadao;
@@ -113,7 +118,7 @@ public class CidadaoService {
     public void atualizaEstadoDeCidadaosAcimaDaIdadeMinima(int idadeMinima) {
         LocalDate dataDeNascimento = LocalDate.now().minusYears(idadeMinima);
         List<Cidadao> cidadaos = cidadaoRepository.listAllCidadaosAcimaDaIdadeMinima(dataDeNascimento);
-        cidadaos.forEach(cidadao -> cidadao.habilita(getPerfilVacinacao()));
+        cidadaos.forEach(cidadao -> cidadao.habilita(getPerfilVacinacao(), notificador));
 
         cidadaoRepository.saveAll(cidadaos);
     }
@@ -124,7 +129,7 @@ public class CidadaoService {
                 .findAllCidadaosIdsComComorbidadesDentroDoPerfil(StringUtil.converterKeysUnicas(comorbidade));
 
         List<Cidadao> cidadaos = cidadaoRepository.findAllById(cidadaosIds);
-        cidadaos.forEach(cidadao -> cidadao.habilita(getPerfilVacinacao()));
+        cidadaos.forEach(cidadao -> cidadao.habilita(getPerfilVacinacao(), notificador));
 
         cidadaoRepository.saveAll(cidadaos);
 
@@ -134,7 +139,7 @@ public class CidadaoService {
 
         List<Cidadao> cidadaos = cidadaoRepository
                 .findAllCidadaosComProfissaoDentroDoPerfil(StringUtil.converterKeysUnicas(profissao));
-        cidadaos.forEach(cidadao -> cidadao.habilita(getPerfilVacinacao()));
+        cidadaos.forEach(cidadao -> cidadao.habilita(getPerfilVacinacao(), notificador));
 
         cidadaoRepository.saveAll(cidadaos);
     }

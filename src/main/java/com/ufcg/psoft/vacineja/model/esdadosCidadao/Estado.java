@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 
 import com.ufcg.psoft.vacineja.model.Cidadao;
+import com.ufcg.psoft.vacineja.service.notificacao.Notificador;
 
 @Entity
 @Inheritance
@@ -17,7 +18,7 @@ public abstract class Estado {
     private Long id;
 	protected String nomeDoEstado;
 	
-	public abstract void atualiza(Cidadao cidadao);
+	public abstract void atualiza(Cidadao cidadao, Notificador notificador);
 
 	public abstract boolean vacina(Cidadao cidadao, int diasEntreDoses, boolean precisaSegundaDose);
 

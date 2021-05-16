@@ -3,6 +3,7 @@ package com.ufcg.psoft.vacineja.model;
 import com.ufcg.psoft.vacineja.model.esdadosCidadao.Estado;
 import com.ufcg.psoft.vacineja.model.esdadosCidadao.NaoHabilitado;
 import com.ufcg.psoft.vacineja.utils.StringUtil;
+import com.ufcg.psoft.vacineja.service.notificacao.Notificador;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -66,15 +67,15 @@ public class Cidadao implements TipoUsuario {
 		this.nascimento = nascimento;
 	}
 
-	public void habilita(PerfilVacinacao vacinacao) {
+	public void habilita(PerfilVacinacao vacinacao, Notificador notificador) {
 		if(vacinacao.getProfissoes().contains(this.profissao) || calculaIdade() >= vacinacao.getIdade() ||
 				temComorbidadeValida(vacinacao.getComorbidades()))	
-			this.estado.atualiza(this);
+			this.estado.atualiza(this, notificador);
 	}
 	
-	public void atualiza() {
+	public void atualiza(Notificador notificador) {
 		if(!(this.estado instanceof NaoHabilitado))
-			this.estado.atualiza(this);
+			this.estado.atualiza(this, notificador);
 	}
 	
 	public boolean vacina(int diasEntreDoses, boolean precisaSegundaDose) {
