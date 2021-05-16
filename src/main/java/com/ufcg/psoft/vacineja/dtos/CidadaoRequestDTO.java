@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 import com.ufcg.psoft.vacineja.utils.anotacoes.IsValidCpf;
+import com.ufcg.psoft.vacineja.utils.anotacoes.IsValidEmail;
 import com.ufcg.psoft.vacineja.utils.anotacoes.isValidPhoneNum;
 
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ import javax.validation.constraints.Size;
 public class CidadaoRequestDTO {
 	
 	@NotNull(message = "Informe o seu email.")
-	@Email(message = "Informe um email válido.")
+	@IsValidEmail()
     private String email;
 
 	@Size(min = 6, max = 15, message = "Informe uma senha que contenha de 6 a 15 caracteres.")

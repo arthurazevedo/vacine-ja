@@ -1,5 +1,6 @@
 package com.ufcg.psoft.vacineja.dtos;
 
+import com.ufcg.psoft.vacineja.utils.anotacoes.IsValidEmail;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 @Setter
 public class LoginDTO {
 	@NotNull(message = "Informe o seu email.")
-	@Email(message = "Informe um email válido.")
+	@IsValidEmail()
     private String email;
 	
 	@Size(min = 6, max = 15, message = "Informe uma senha que contenha de 6 a 15 caracteres.")
