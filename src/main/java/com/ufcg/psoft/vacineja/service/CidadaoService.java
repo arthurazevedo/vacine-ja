@@ -47,6 +47,7 @@ public class CidadaoService {
     @Autowired
     private Notificador notificador;
 
+    @Autowired
     private LoginUtil loginUtil;
 
     @Value("${hash.forca}")
