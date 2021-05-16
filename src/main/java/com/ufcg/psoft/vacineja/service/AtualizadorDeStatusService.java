@@ -1,7 +1,6 @@
 package com.ufcg.psoft.vacineja.service;
 
 import com.ufcg.psoft.vacineja.model.Cidadao;
-import com.ufcg.psoft.vacineja.model.esdadosCidadao.HabilitadoPrimeiraDose;
 import com.ufcg.psoft.vacineja.repository.CidadaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;

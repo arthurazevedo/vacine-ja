@@ -12,13 +12,13 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Pattern(regexp = "^(\\d{11})|(\\d{3}[.]\\d{3}[.]\\d{3}[-]\\d{2})$")
+@Pattern(regexp = "^((\\(\\d{2}\\))|\\d{2})?\\d{4,5}[-]?\\d{4}$")
 @Target( { METHOD, FIELD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
 @Documented
-public @interface IsValidCpf {
-    String message() default "Por favor informe um cpf valido.";
+public @interface isValidPhoneNum {
+    String message() default "Por favor informe um número de telefone válido";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

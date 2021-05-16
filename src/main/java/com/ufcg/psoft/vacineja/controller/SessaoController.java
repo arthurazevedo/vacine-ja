@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/auth")
 public class SessaoController {
@@ -36,7 +38,7 @@ public class SessaoController {
     private int forcaHash;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<?> login(@RequestBody @Valid LoginDTO loginDTO) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(forcaHash);
 
         UsernamePasswordAuthenticationToken dadosLogin = new UsernamePasswordAuthenticationToken(

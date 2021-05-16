@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -14,7 +13,6 @@ import javax.validation.constraints.Size;
 public class VacinaDTO {
     @NotNull(message = "Informe o fabricante da vacina.")
     @Size(min = 3, message = "Informe um fabricante válido.")
-    @NotBlank(message = "Informe o fabricante da vacina.")
     private String fabricante;
 
     @NotNull(message = "Informe se a vacina precisa de segunda dose.")

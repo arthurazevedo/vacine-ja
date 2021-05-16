@@ -74,7 +74,7 @@ public class PerfilVacinacaoService {
     public void alterarIdadeMinima(int novaIdade) {
         PerfilVacinacao perfilVacinacao = this.pegarPerfil();
         int idadeAtual = perfilVacinacao.getIdade();
-        if(novaIdade < 0 || novaIdade >= idadeAtual) {
+        if(novaIdade >= idadeAtual) {
             throw new ValidacaoException(
                     new ErroDeSistema(ErroPerfilVacinacao.erroIdadeMinima())
             );

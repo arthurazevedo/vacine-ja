@@ -5,6 +5,9 @@ import com.ufcg.psoft.vacineja.dtos.RegistrosResponseDTO;
 import com.ufcg.psoft.vacineja.model.RegistroVacina;
 import com.ufcg.psoft.vacineja.service.RegistroVacinaService;
 import com.ufcg.psoft.vacineja.utils.MapperUtil;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +26,7 @@ public class RegistroVacinaController {
     private MapperUtil mapper;
 
     @PostMapping
-    public ResponseEntity<?> registrar(@RequestBody RegistrosRequestDTO body) {
+    public ResponseEntity<?> registrar(@RequestBody @Valid RegistrosRequestDTO body) {
         RegistroVacina registro = registroVacinaService.cadastrar(body);
 
         RegistrosResponseDTO registroResponse = mapper.toDTO(registro, RegistrosResponseDTO.class);

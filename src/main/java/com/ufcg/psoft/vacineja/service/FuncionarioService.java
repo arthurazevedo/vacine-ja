@@ -1,10 +1,8 @@
 package com.ufcg.psoft.vacineja.service;
 
-import com.ufcg.psoft.vacineja.dtos.AprovarDTO;
 import com.ufcg.psoft.vacineja.dtos.FuncionarioCadastroDTO;
 import com.ufcg.psoft.vacineja.model.Cidadao;
 import com.ufcg.psoft.vacineja.model.Funcionario;
-import com.ufcg.psoft.vacineja.model.Usuario;
 import com.ufcg.psoft.vacineja.model.enums.TipoUsuarioEnum;
 import com.ufcg.psoft.vacineja.repository.FuncionarioRepository;
 import com.ufcg.psoft.vacineja.utils.ErroCidadao;
@@ -16,9 +14,6 @@ import com.ufcg.psoft.vacineja.utils.error.model.ErroDeSistema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,13 +37,6 @@ public class FuncionarioService {
         if (naoExisteCidadao) {
             throw new ValidacaoException(
                     new ErroDeSistema(ErroCidadao.erroCidadaoNaoEcontrado())
-            );
-        }
-
-        if (funcionarioDTO.getCargo() == null || funcionarioDTO.getLocalTrabalho() == null
-                || funcionarioDTO.getCargo().equals("") || funcionarioDTO.getLocalTrabalho().equals("")) {
-            throw new ValidacaoException(
-                    new ErroDeSistema("Informações inválidas.")
             );
         }
 

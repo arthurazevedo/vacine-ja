@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -84,12 +83,11 @@ public class LoteDeVacinaService {
 
         LoteDeVacina lote = optionalLote.get();
 
-        if(nonNull(loteDeVacinaUpdateDTO.getDataDeValidade()) &&
-                loteDeVacinaUpdateDTO.getDataDeValidade().compareTo(LocalDate.now()) > 0) {
+        if(nonNull(loteDeVacinaUpdateDTO.getDataDeValidade())) {
             lote.setDataDeValidade(loteDeVacinaUpdateDTO.getDataDeValidade());
         }
 
-        if(nonNull(loteDeVacinaUpdateDTO.getNumDoses()) && loteDeVacinaUpdateDTO.getNumDoses() >= 0) {
+        if(nonNull(loteDeVacinaUpdateDTO.getNumDoses())) {
             lote.setNumDoses(loteDeVacinaUpdateDTO.getNumDoses());
         }
 
