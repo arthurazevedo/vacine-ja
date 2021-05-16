@@ -1,23 +1,19 @@
 package com.ufcg.psoft.vacineja.service;
 
-import java.util.Date;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-
 import com.ufcg.psoft.vacineja.dtos.AgendamentoDTO;
 import com.ufcg.psoft.vacineja.model.Agendamento;
 import com.ufcg.psoft.vacineja.model.Cidadao;
-import com.ufcg.psoft.vacineja.model.Usuario;
 import com.ufcg.psoft.vacineja.repository.AgendamentoRepository;
 import com.ufcg.psoft.vacineja.repository.LoteRepository;
-import com.ufcg.psoft.vacineja.service.factory.TipoUsuarioFactory;
 import com.ufcg.psoft.vacineja.utils.ErroAgendamento;
+import com.ufcg.psoft.vacineja.utils.LoginUtil;
 import com.ufcg.psoft.vacineja.utils.error.exception.ValidacaoException;
 import com.ufcg.psoft.vacineja.utils.error.model.ErroDeSistema;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 public class AgendamentoService {
@@ -27,16 +23,14 @@ public class AgendamentoService {
 	
 	@Autowired
 	private LoteRepository loteRepository;
-	
+
 	@Autowired
-	private TipoUsuarioFactory usuarioFactory;
+	private LoginUtil loginUtil;
 	
 	public void salvaAgendamento(AgendamentoDTO agendamentoDTO) {
-		Authentication autenticacao = SecurityContextHolder.getContext().getAuthentication();
-		
-		Usuario usuario = (Usuario) autenticacao.getPrincipal();
+		Cidadao cidadao = loginUtil.pegarCidadaoLogado();
 			
-		autorizadoAgendar(usuario);
+		autorizadoAgendar(cidadao);
 		
 		if(agendamentoDTO.getHorario() == null) {
             throw new ValidacaoException(
@@ -46,28 +40,25 @@ public class AgendamentoService {
 		
 		horarioEstaVago(agendamentoDTO.getHorario());
 		
-		agendamentoRepository.save(new Agendamento(agendamentoDTO.getHorario(), usuario));
+		agendamentoRepository.save(new Agendamento(agendamentoDTO.getHorario(), cidadao.getUsuario()));
 	}
 	
-	public void horarioEstaVago(Date horario) {
+	private void horarioEstaVago(Date horario) {
 		if(agendamentoRepository.existsByLessThanTenMinInterval(horario) || horario.before(new Date())) {
 			throw new ValidacaoException(
 		         new ErroDeSistema(ErroAgendamento.erroHorarioIndisponivel(horario), HttpStatus.BAD_REQUEST)
 		    );
         }
 	}
-	
-	
-	public void autorizadoAgendar(Usuario usuario) {
-		Cidadao cidadao = (Cidadao) usuarioFactory.get(usuario);
-		
+
+	private void autorizadoAgendar(Cidadao cidadao) {
 		if(!cidadao.exibeEstado().contains("Habilitado para tomar")) {
 			throw new ValidacaoException(
 	             new ErroDeSistema(ErroAgendamento.erroUsuarioNaoHabilitado(), HttpStatus.BAD_REQUEST)
 	        );
 		}
 		
-		if(agendamentoRepository.existsByUsuario(usuario)) {
+		if(agendamentoRepository.existsByUsuario(cidadao.getUsuario())) {
 			throw new ValidacaoException(
 	             new ErroDeSistema(ErroAgendamento.erroAgendamentoPendente(), HttpStatus.BAD_REQUEST)
 	        );

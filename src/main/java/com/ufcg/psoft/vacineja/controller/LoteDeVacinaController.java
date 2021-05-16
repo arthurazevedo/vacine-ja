@@ -36,8 +36,8 @@ public class LoteDeVacinaController {
     }
 
     @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
-    public List<LoteDeVacinaResponseDTO> listarLotes(@RequestParam Long vacinaId) {
-        return loteDeVacinaService.listarLotesPorVacina(vacinaId);
+    public List<LoteDeVacinaResponseDTO> listarLotes(@RequestParam String fabricante) {
+        return loteDeVacinaService.listarLotesPorVacina(fabricante);
     }
 
     @GetMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })

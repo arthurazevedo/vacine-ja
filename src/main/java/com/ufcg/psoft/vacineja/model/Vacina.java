@@ -20,6 +20,6 @@ public class Vacina {
     private Long id;
     @Column(unique = true)
     private String fabricante;
-    private int dosesRequeridas;
+    private boolean precisaSegundaDose;
     private int intervaloEntreDoses;
 }

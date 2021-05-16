@@ -13,14 +13,13 @@ import com.ufcg.psoft.vacineja.service.notificacao.Notificador;
 import com.ufcg.psoft.vacineja.utils.ConverterKeysUnicas;
 import com.ufcg.psoft.vacineja.utils.ErroCidadao;
 import com.ufcg.psoft.vacineja.utils.ErroPerfilVacinacao;
+import com.ufcg.psoft.vacineja.utils.LoginUtil;
 import com.ufcg.psoft.vacineja.utils.MapperUtil;
 import com.ufcg.psoft.vacineja.utils.error.exception.ValidacaoException;
 import com.ufcg.psoft.vacineja.utils.error.model.ErroDeSistema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,10 +29,6 @@ import java.util.Optional;
 
 @Service
 public class CidadaoService {
-	
-	@Autowired
-    private TipoUsuarioFactory tipoUsuarioFactory;
-	
     @Autowired
     private CidadaoRepository cidadaoRepository;
 
@@ -52,15 +47,15 @@ public class CidadaoService {
     @Autowired
     private Notificador notificador;
 
+    private LoginUtil loginUtil;
+
     @Value("${hash.forca}")
     private int forcaHash;
 
     public String pegarEstadoCidadao() {
-    	Authentication autenticacao = SecurityContextHolder.getContext().getAuthentication();
-    	
-        Cidadao cidadaoAuthenticated = (Cidadao) tipoUsuarioFactory.get((Usuario) autenticacao.getPrincipal());
+    	Cidadao cidadao = loginUtil.pegarCidadaoLogado();
         
-        return cidadaoAuthenticated.exibeEstado();
+        return cidadao.exibeEstado();
     }
 
     public Cidadao pegarCidadaoPorCpf(String cpf) {
@@ -82,11 +77,9 @@ public class CidadaoService {
     }
 
     public Cidadao atualizaCidadao(CidadaoUpdateDTO cidadaoUpdateDTO) {
-    	Authentication autenticacao = SecurityContextHolder.getContext().getAuthentication();
+        Cidadao cidadao = loginUtil.pegarCidadaoLogado();
 
-        Cidadao cidadaoAuthenticated = (Cidadao) tipoUsuarioFactory.get((Usuario) autenticacao.getPrincipal());
-
-        boolean naoExisteCidadao = cidadaoAuthenticated == null;
+        boolean naoExisteCidadao = cidadao == null;
 
         if (naoExisteCidadao) {
             throw new ValidacaoException(
@@ -95,27 +88,27 @@ public class CidadaoService {
         }
 
          if(cidadaoUpdateDTO.getComorbidades() != null) {
-        	 cidadaoAuthenticated.setComorbidades(cidadaoUpdateDTO.getComorbidades());
+        	 cidadao.setComorbidades(cidadaoUpdateDTO.getComorbidades());
          }
 
          if(cidadaoUpdateDTO.getNome() != null) {
-        	 cidadaoAuthenticated.setNome(cidadaoUpdateDTO.getNome());
+        	 cidadao.setNome(cidadaoUpdateDTO.getNome());
          }
 
          if(cidadaoUpdateDTO.getEndereco() != null) {
-        	 cidadaoAuthenticated.setEndereco(cidadaoUpdateDTO.getEndereco());
+        	 cidadao.setEndereco(cidadaoUpdateDTO.getEndereco());
          }
 
          if(cidadaoUpdateDTO.getTelefone() != null) {
-        	 cidadaoAuthenticated.setTelefone(cidadaoUpdateDTO.getTelefone());
+        	 cidadao.setTelefone(cidadaoUpdateDTO.getTelefone());
          }
 
          if(cidadaoUpdateDTO.getProfissao() != null) {
-        	 cidadaoAuthenticated.setProfissao(cidadaoUpdateDTO.getProfissao());
+        	 cidadao.setProfissao(cidadaoUpdateDTO.getProfissao());
          }
 
-         cidadaoRepository.save(cidadaoAuthenticated);
-         return cidadaoAuthenticated;
+         cidadaoRepository.save(cidadao);
+         return cidadao;
     }
 
     public Cidadao salvarCidadao(CidadaoRequestDTO cidadaoRequestDTO) {
