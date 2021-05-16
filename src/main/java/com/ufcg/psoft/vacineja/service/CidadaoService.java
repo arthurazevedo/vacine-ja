@@ -8,11 +8,11 @@ import com.ufcg.psoft.vacineja.model.Usuario;
 import com.ufcg.psoft.vacineja.repository.AgendamentoRepository;
 import com.ufcg.psoft.vacineja.repository.CidadaoRepository;
 import com.ufcg.psoft.vacineja.repository.PerfilVacinacaoRepository;
+import com.ufcg.psoft.vacineja.utils.StringUtil;
+import com.ufcg.psoft.vacineja.utils.error.ErroCidadao;
+import com.ufcg.psoft.vacineja.utils.error.ErroPerfilVacinacao;
 import com.ufcg.psoft.vacineja.service.factory.TipoUsuarioFactory;
 import com.ufcg.psoft.vacineja.service.notificacao.Notificador;
-import com.ufcg.psoft.vacineja.utils.ConverterKeysUnicas;
-import com.ufcg.psoft.vacineja.utils.ErroCidadao;
-import com.ufcg.psoft.vacineja.utils.ErroPerfilVacinacao;
 import com.ufcg.psoft.vacineja.utils.LoginUtil;
 import com.ufcg.psoft.vacineja.utils.MapperUtil;
 import com.ufcg.psoft.vacineja.utils.error.exception.ValidacaoException;
@@ -58,22 +58,9 @@ public class CidadaoService {
         
         return cidadao.exibeEstado();
     }
-
-    public Cidadao pegarCidadaoPorCpf(String cpf) {
-        Optional<Cidadao> cidadaoOptional = cidadaoRepository.findByCpf(cpf);
-        if(cidadaoOptional.isEmpty()) {
-            throw new ValidacaoException(
-                    new ErroDeSistema(ErroCidadao.erroCidadaoNaoExiste(cpf), HttpStatus.NOT_FOUND)
-            );
-        }
-        return cidadaoOptional.get();
-    }
-
-    public void salvaCidadao(Cidadao cidadao) {
-        cidadaoRepository.save(cidadao);
-    }
     
     public boolean contemCidadao(String cpf) {
+        cpf = StringUtil.paraStringDeNumeros(cpf);
     	return cidadaoRepository.existsByCpf(cpf);
     }
 
@@ -139,7 +126,7 @@ public class CidadaoService {
     public void atualizaEstadoDeCidadaosAdequadosPorComorbidade(String comorbidade) {
 
         List<Long> cidadaosIds = cidadaoRepository
-                .findAllCidadaosIdsComComorbidadesDentroDoPerfil(ConverterKeysUnicas.convert(comorbidade));
+                .findAllCidadaosIdsComComorbidadesDentroDoPerfil(StringUtil.converterKeysUnicas(comorbidade));
 
         List<Cidadao> cidadaos = cidadaoRepository.findAllById(cidadaosIds);
         cidadaos.forEach(cidadao -> cidadao.habilita(getPerfilVacinacao(), notificador));
@@ -151,7 +138,7 @@ public class CidadaoService {
     public void atualizaEstadoDeCidadaosAdequadosPorProfissao(String profissao) {
 
         List<Cidadao> cidadaos = cidadaoRepository
-                .findAllCidadaosComProfissaoDentroDoPerfil(ConverterKeysUnicas.convert(profissao));
+                .findAllCidadaosComProfissaoDentroDoPerfil(StringUtil.converterKeysUnicas(profissao));
         cidadaos.forEach(cidadao -> cidadao.habilita(getPerfilVacinacao(), notificador));
 
         cidadaoRepository.saveAll(cidadaos);
@@ -182,6 +169,8 @@ public class CidadaoService {
     }
     
     public Cidadao vacinaCidadao(String cpf, int diasEntreDoses, boolean precisaSegundaDose) {
+        cpf = StringUtil.paraStringDeNumeros(cpf);
+
     	Optional<Cidadao> cidadaoOptional = cidadaoRepository.findByCpf(cpf);
 
         if (cidadaoOptional.isEmpty()) {
