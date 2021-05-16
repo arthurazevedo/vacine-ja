@@ -51,7 +51,8 @@ public class CidadaoRequestDTO {
 
 	@NotBlank(message = "Informe a profissão do cidadão (ou desempregado).")
 	private String profissao;
-
+	
+	@NotNull(message = "No caso de não haverem comorbidades envie uma lista vazia")
 	private Set<@NotBlank(message = "Informe comorbidades não nulas nem em branco") String> comorbidades;
 
 	@NotNull(message = "Informe a data de nascimento.")
