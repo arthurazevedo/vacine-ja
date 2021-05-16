@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 @Data
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)

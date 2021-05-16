@@ -45,12 +45,6 @@ public class PerfilVacinacaoService {
     }
 
     public void adicionarProfissao(String novaProfissao) {
-        if(novaProfissao.isBlank()) {
-            throw new ValidacaoException(
-                    new ErroDeSistema(ErroPerfilVacinacao.erroProfissaoInvalida())
-            );
-        }
-
         PerfilVacinacao perfilVacinacao = this.pegarPerfil();
         perfilVacinacao.adicionarProfissao(novaProfissao);
         perfilVacinacaoRepository.save(perfilVacinacao);
@@ -59,12 +53,6 @@ public class PerfilVacinacaoService {
     }
 
     public void adicionarComorbidade(String novaComorbidade) {
-        if(novaComorbidade.isBlank()) {
-            throw new ValidacaoException(
-                    new ErroDeSistema(ErroPerfilVacinacao.erroComorbidadeInvalida())
-            );
-        }
-
         PerfilVacinacao perfilVacinacao =  this.pegarPerfil();
         perfilVacinacao.adicionarComorbidade(novaComorbidade);
         perfilVacinacaoRepository.save(perfilVacinacao);
