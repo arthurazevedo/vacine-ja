@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -31,7 +32,7 @@ public class LoteDeVacinaController {
 
     @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseStatus(HttpStatus.CREATED)
-    public LoteDeVacinaResponseDTO cadastrarLote(@RequestBody LoteDeVacinaCreateDTO loteDeVacinaCreateDTO) {
+    public LoteDeVacinaResponseDTO cadastrarLote(@RequestBody @Valid LoteDeVacinaCreateDTO loteDeVacinaCreateDTO) {
         return loteDeVacinaService.cadastrarLote(loteDeVacinaCreateDTO);
     }
 
@@ -46,7 +47,7 @@ public class LoteDeVacinaController {
     }
 
     @PutMapping(value = "/{id}", consumes = { MediaType.APPLICATION_JSON_VALUE })
-    public LoteDeVacina editarLote(@PathVariable Long id, @RequestBody LoteDeVacinaUpdateDTO loteDeVacinaUpdateDTO){
+    public LoteDeVacina editarLote(@PathVariable Long id, @RequestBody @Valid LoteDeVacinaUpdateDTO loteDeVacinaUpdateDTO){
         return loteDeVacinaService.editarLote(id, loteDeVacinaUpdateDTO);
     }
 

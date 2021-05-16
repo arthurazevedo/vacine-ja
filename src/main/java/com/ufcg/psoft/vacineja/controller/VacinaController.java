@@ -1,5 +1,6 @@
 package com.ufcg.psoft.vacineja.controller;
 
+import com.ufcg.psoft.vacineja.dtos.VacinaAtualizaDTO;
 import com.ufcg.psoft.vacineja.dtos.VacinaDTO;
 import com.ufcg.psoft.vacineja.model.Vacina;
 import com.ufcg.psoft.vacineja.service.VacinaService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,9 +29,9 @@ public class VacinaController {
     @Autowired
     private VacinaService vacinaService;
 
-    @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
+    @PostMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseStatus(HttpStatus.CREATED)
-    public Vacina cadastrarVacina(@RequestBody VacinaDTO vacinaDTO) {
+    public Vacina cadastrarVacina(@RequestBody @Valid VacinaDTO vacinaDTO) {
         return vacinaService.cadastrarVacina(vacinaDTO);
     }
 
@@ -43,9 +45,9 @@ public class VacinaController {
         return vacinaService.buscarPorId(id);
     }
 
-    @PutMapping(value = "/{id}", consumes = { MediaType.APPLICATION_JSON_VALUE })
+    @PutMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Vacina editarVacina(@PathVariable Long id, @RequestBody VacinaDTO vacinaDTO) {
+    public Vacina editarVacina(@PathVariable Long id, @RequestBody @Valid VacinaAtualizaDTO vacinaDTO) {
         return vacinaService.editarVacina(id, vacinaDTO);
     }
 

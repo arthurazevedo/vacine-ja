@@ -1,5 +1,6 @@
 package com.ufcg.psoft.vacineja.service;
 
+import com.ufcg.psoft.vacineja.dtos.VacinaAtualizaDTO;
 import com.ufcg.psoft.vacineja.dtos.VacinaDTO;
 import com.ufcg.psoft.vacineja.model.Vacina;
 import com.ufcg.psoft.vacineja.repository.VacinaRepository;
@@ -47,7 +48,7 @@ public class VacinaService {
         return vacinaRepository.findAll();
     }
 
-    public Vacina editarVacina(Long id, VacinaDTO vacinaDTO) {
+    public Vacina editarVacina(Long id, VacinaAtualizaDTO vacinaDTO) {
         Optional<Vacina> optionalVacina = vacinaRepository.findById(id);
 
         if(optionalVacina.isEmpty()) {
@@ -84,11 +85,6 @@ public class VacinaService {
 
     private void validarDtoCadastroDeVacina(VacinaDTO vacinaDTO) {
         String fabricante = vacinaDTO.getFabricante();
-        if(fabricante.isBlank()) {
-            throw new ValidacaoException(
-                    new ErroDeSistema(ErroVacina.erroFabricanteNulo())
-            );
-        }
 
         if(vacinaRepository.existsByFabricante(ConverterKeysUnicas.convert(fabricante))) {
             throw new ValidacaoException(
@@ -96,11 +92,11 @@ public class VacinaService {
             );
         }
 
-        if(vacinaDTO.isPrecisaSegundaDose() && vacinaDTO.getIntervaloEntreDoses() <= 0) {
+        if(vacinaDTO.getPrecisaSegundaDose() && vacinaDTO.getIntervaloEntreDoses() <= 0) {
             throw new ValidacaoException(
                     new ErroDeSistema(ErroVacina.erroVacinaSemIntervaloEntreDoses())
             );
-        } else if(!vacinaDTO.isPrecisaSegundaDose() && vacinaDTO.getIntervaloEntreDoses() > 0) {
+        } else if(!vacinaDTO.getPrecisaSegundaDose() && vacinaDTO.getIntervaloEntreDoses() > 0) {
             throw new ValidacaoException(
                     new ErroDeSistema(ErroVacina.erroVacinaDeDoseUnica())
             );
