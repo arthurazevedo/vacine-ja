@@ -5,8 +5,9 @@ import com.ufcg.psoft.vacineja.model.Cidadao;
 import com.ufcg.psoft.vacineja.model.Funcionario;
 import com.ufcg.psoft.vacineja.model.enums.TipoUsuarioEnum;
 import com.ufcg.psoft.vacineja.repository.FuncionarioRepository;
-import com.ufcg.psoft.vacineja.utils.ErroCidadao;
-import com.ufcg.psoft.vacineja.utils.ErroFuncionario;
+import com.ufcg.psoft.vacineja.utils.StringUtil;
+import com.ufcg.psoft.vacineja.utils.error.ErroCidadao;
+import com.ufcg.psoft.vacineja.utils.error.ErroFuncionario;
 import com.ufcg.psoft.vacineja.utils.LoginUtil;
 import com.ufcg.psoft.vacineja.utils.MapperUtil;
 import com.ufcg.psoft.vacineja.utils.error.exception.ValidacaoException;
@@ -14,6 +15,7 @@ import com.ufcg.psoft.vacineja.utils.error.model.ErroDeSistema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -61,6 +63,8 @@ public class FuncionarioService {
     }
 
     public void aprovarCadastroFuncionario(String cpfFuncionario) {
+        cpfFuncionario = StringUtil.paraStringDeNumeros(cpfFuncionario);
+
         Optional<Funcionario> funcionarioOptional = funcionarioRepository.findFuncionarioByCidadaoCpf(cpfFuncionario);
 
         if(funcionarioOptional.isEmpty()) {

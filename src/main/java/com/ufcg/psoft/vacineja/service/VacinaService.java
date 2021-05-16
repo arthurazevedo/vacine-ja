@@ -4,8 +4,8 @@ import com.ufcg.psoft.vacineja.dtos.VacinaAtualizaDTO;
 import com.ufcg.psoft.vacineja.dtos.VacinaDTO;
 import com.ufcg.psoft.vacineja.model.Vacina;
 import com.ufcg.psoft.vacineja.repository.VacinaRepository;
-import com.ufcg.psoft.vacineja.utils.ConverterKeysUnicas;
-import com.ufcg.psoft.vacineja.utils.ErroVacina;
+import com.ufcg.psoft.vacineja.utils.StringUtil;
+import com.ufcg.psoft.vacineja.utils.error.ErroVacina;
 import com.ufcg.psoft.vacineja.utils.MapperUtil;
 import com.ufcg.psoft.vacineja.utils.error.exception.ValidacaoException;
 import com.ufcg.psoft.vacineja.utils.error.model.ErroDeSistema;
@@ -25,9 +25,8 @@ public class VacinaService {
     private MapperUtil mapper;
 
     public Vacina cadastrarVacina(VacinaDTO vacinaDTO) {
-    	validarDtoCadastroDeVacina(vacinaDTO);
-  
-        vacinaDTO.setFabricante(ConverterKeysUnicas.convert(vacinaDTO.getFabricante()));
+        validarDtoCadastroDeVacina(vacinaDTO);
+        vacinaDTO.setFabricante(StringUtil.converterKeysUnicas(vacinaDTO.getFabricante()));
         final var vacina = mapper.toEntity(vacinaDTO, Vacina.class);
         vacinaRepository.save(vacina);
         return vacina;
@@ -59,8 +58,8 @@ public class VacinaService {
 
         Vacina vacina = optionalVacina.get();
 
-        if(vacinaDTO.getFabricante() != null) {
-            vacina.setFabricante(ConverterKeysUnicas.convert(vacinaDTO.getFabricante()));
+        if(!vacinaDTO.getFabricante().isBlank()) {
+            vacina.setFabricante(StringUtil.converterKeysUnicas(vacinaDTO.getFabricante()));
         }
 
         if(vacinaDTO.getFabricante() != null) {
@@ -88,7 +87,7 @@ public class VacinaService {
     private void validarDtoCadastroDeVacina(VacinaDTO vacinaDTO) {
         String fabricante = vacinaDTO.getFabricante();
 
-        if(vacinaRepository.existsByFabricante(ConverterKeysUnicas.convert(fabricante))) {
+        if(vacinaRepository.existsByFabricante(StringUtil.converterKeysUnicas(fabricante))) {
             throw new ValidacaoException(
                     new ErroDeSistema(ErroVacina.erroFabricanteJaCadastrado(fabricante))
             );

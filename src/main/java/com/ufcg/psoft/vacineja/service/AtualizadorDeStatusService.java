@@ -2,6 +2,7 @@ package com.ufcg.psoft.vacineja.service;
 
 import com.ufcg.psoft.vacineja.model.Cidadao;
 import com.ufcg.psoft.vacineja.repository.CidadaoRepository;
+import com.ufcg.psoft.vacineja.service.notificacao.Notificador;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,6 +17,9 @@ public class AtualizadorDeStatusService {
     @Autowired
     CidadaoRepository cidadaoRepository;
 
+    @Autowired
+    Notificador notificador;
+
     /**
      * Todos os dias de meia noite será chamado o método para atualizar o status de todos
      * os cidadãos.
@@ -24,7 +28,7 @@ public class AtualizadorDeStatusService {
     public void atualizaStatus() {
         List<Cidadao> cidadaos = cidadaoRepository.findAllCidadaoByEstadoNomeDoEstado("TomouPrimeiraDose");
         for(Cidadao cidadao: cidadaos) {
-            cidadao.atualiza();
+            cidadao.atualiza(notificador);
             cidadaoRepository.save(cidadao);
         }
     }

@@ -2,7 +2,7 @@ package com.ufcg.psoft.vacineja.service;
 
 import com.ufcg.psoft.vacineja.model.PerfilVacinacao;
 import com.ufcg.psoft.vacineja.repository.PerfilVacinacaoRepository;
-import com.ufcg.psoft.vacineja.utils.ErroPerfilVacinacao;
+import com.ufcg.psoft.vacineja.utils.error.ErroPerfilVacinacao;
 import com.ufcg.psoft.vacineja.utils.error.exception.ValidacaoException;
 import com.ufcg.psoft.vacineja.utils.error.model.ErroDeSistema;
 import org.springframework.beans.factory.annotation.Autowired;

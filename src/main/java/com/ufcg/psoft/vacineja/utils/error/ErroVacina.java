@@ -1,4 +1,4 @@
-package com.ufcg.psoft.vacineja.utils;
+package com.ufcg.psoft.vacineja.utils.error;
 
 import static java.lang.String.format;
 

@@ -5,7 +5,7 @@ import com.ufcg.psoft.vacineja.model.Agendamento;
 import com.ufcg.psoft.vacineja.model.Cidadao;
 import com.ufcg.psoft.vacineja.repository.AgendamentoRepository;
 import com.ufcg.psoft.vacineja.repository.LoteRepository;
-import com.ufcg.psoft.vacineja.utils.ErroAgendamento;
+import com.ufcg.psoft.vacineja.utils.error.ErroAgendamento;
 import com.ufcg.psoft.vacineja.utils.LoginUtil;
 import com.ufcg.psoft.vacineja.utils.error.exception.ValidacaoException;
 import com.ufcg.psoft.vacineja.utils.error.model.ErroDeSistema;

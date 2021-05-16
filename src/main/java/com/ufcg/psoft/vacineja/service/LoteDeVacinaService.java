@@ -7,9 +7,9 @@ import com.ufcg.psoft.vacineja.model.LoteDeVacina;
 import com.ufcg.psoft.vacineja.model.Vacina;
 import com.ufcg.psoft.vacineja.repository.LoteRepository;
 import com.ufcg.psoft.vacineja.repository.VacinaRepository;
-import com.ufcg.psoft.vacineja.utils.ConverterKeysUnicas;
-import com.ufcg.psoft.vacineja.utils.ErroLote;
-import com.ufcg.psoft.vacineja.utils.ErroVacina;
+import com.ufcg.psoft.vacineja.utils.StringUtil;
+import com.ufcg.psoft.vacineja.utils.error.ErroLote;
+import com.ufcg.psoft.vacineja.utils.error.ErroVacina;
 import com.ufcg.psoft.vacineja.utils.MapperUtil;
 import com.ufcg.psoft.vacineja.utils.error.exception.ValidacaoException;
 import com.ufcg.psoft.vacineja.utils.error.model.ErroDeSistema;
@@ -36,7 +36,7 @@ public class LoteDeVacinaService {
 
     public LoteDeVacinaResponseDTO cadastrarLote(LoteDeVacinaCreateDTO loteDeVacinaCreateDTO) {
         Optional<Vacina> optionalVacina = vacinaRepository
-                .findByFabricante(ConverterKeysUnicas.convert(loteDeVacinaCreateDTO.getFabricanteDaVacina()));
+                .findByFabricante(StringUtil.converterKeysUnicas(loteDeVacinaCreateDTO.getFabricanteDaVacina()));
         if(optionalVacina.isEmpty()) {
             throw new ValidacaoException(
                 new ErroDeSistema(
@@ -67,7 +67,7 @@ public class LoteDeVacinaService {
     }
 
     public List<LoteDeVacinaResponseDTO> listarLotesPorVacina(String fabricante) {
-        return loteRepository.findAllLotesByVacinaFabricante(ConverterKeysUnicas.convert(fabricante))
+        return loteRepository.findAllLotesByVacinaFabricante(StringUtil.converterKeysUnicas(fabricante))
                 .stream()
                 .map(loteDeVacina -> mapper.toDTO(loteDeVacina, LoteDeVacinaResponseDTO.class))
                 .collect(Collectors.toList());
@@ -92,7 +92,7 @@ public class LoteDeVacinaService {
         }
 
         Optional<Vacina> optionalVacina = vacinaRepository
-                .findByFabricante(ConverterKeysUnicas.convert(loteDeVacinaUpdateDTO.getFabricanteDaVacina()));
+                .findByFabricante(StringUtil.converterKeysUnicas(loteDeVacinaUpdateDTO.getFabricanteDaVacina()));
         if(optionalVacina.isEmpty()) {
             throw new ValidacaoException(
                 new ErroDeSistema(
