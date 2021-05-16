@@ -1,8 +1,9 @@
 package com.ufcg.psoft.vacineja.model.esdadosCidadao;
 
-import javax.persistence.Entity;
-
 import com.ufcg.psoft.vacineja.model.Cidadao;
+import com.ufcg.psoft.vacineja.service.notificacao.Notificador;
+
+import javax.persistence.Entity;
 
 @Entity
 public class NaoHabilitado extends Estado {
@@ -12,8 +13,10 @@ public class NaoHabilitado extends Estado {
 	}
 
 	@Override
-	public void atualiza(Cidadao cidadao) {
+	public void atualiza(Cidadao cidadao, Notificador notificador) {
 		cidadao.mudaEstado(new HabilitadoPrimeiraDose());
+		notificador.notificar(cidadao, "Você está habilitado para vacinação!",
+				"Você já está habilitado para tomar a primeira dose da vacina!");
 	}
 	
 	@Override

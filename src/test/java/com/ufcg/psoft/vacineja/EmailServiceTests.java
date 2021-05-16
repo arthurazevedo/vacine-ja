@@ -1,6 +1,6 @@
 package com.ufcg.psoft.vacineja;
 
-import com.ufcg.psoft.vacineja.service.EnviarEmailService;
+import com.ufcg.psoft.vacineja.service.notificacao.EnviarEmailService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
