@@ -6,7 +6,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EnviarEmailService implements EnviarEmail {
+public class EnviarEmailService {
 
     @Autowired
     private JavaMailSender enviarEmail;

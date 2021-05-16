@@ -1,12 +1,14 @@
 package com.ufcg.psoft.vacineja.service.notificacao;
 
 import com.ufcg.psoft.vacineja.model.Cidadao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class NotificacaoEmail implements Notificacao {
 
-    EnviarEmail enviarEmail = new EnviarEmailService();
+    @Autowired
+    EnviarEmailService enviarEmail;
 
     @Override
     public void notificar(Cidadao cidadao, String assunto, String mensagem) {

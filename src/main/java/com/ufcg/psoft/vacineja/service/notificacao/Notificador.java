@@ -1,6 +1,7 @@
 package com.ufcg.psoft.vacineja.service.notificacao;
 
 import com.ufcg.psoft.vacineja.model.Cidadao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -8,12 +9,11 @@ import java.util.Set;
 
 @Component
 public class Notificador {
+    @Autowired
     private Set<Notificacao> listeners;
 
     public Notificador() {
         listeners = new HashSet<>();
-        listeners.add(new NotificacaoEmail());
-        listeners.add(new NotificacaoSms());
     }
 
     public void inscrever(Notificacao notificacao) {
